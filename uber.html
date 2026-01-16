@@ -1,0 +1,989 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransitFinder - Find & Book Nearby Transport</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: #34a853;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #bbdefb;
+        }
+        
+        .auth-buttons button {
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+        
+        .sign-in {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .sign-up {
+            background: white;
+            color: #1a73e8;
+        }
+        
+        .auth-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 60px 0;
+            background: linear-gradient(rgba(26, 115, 232, 0.05), rgba(13, 71, 161, 0.05));
+        }
+        
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .hero-text {
+            flex: 1;
+            padding-right: 40px;
+        }
+        
+        .hero-text h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            color: #1a237e;
+        }
+        
+        .hero-text p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #555;
+        }
+        
+        .hero-image {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Search Section */
+        .search-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            margin-top: -30px;
+            position: relative;
+            z-index: 100;
+        }
+        
+        .search-section h2 {
+            margin-bottom: 25px;
+            color: #1a237e;
+            text-align: center;
+        }
+        
+        .search-options {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        
+        .transport-type {
+            display: flex;
+            background: #f1f3f4;
+            border-radius: 50px;
+            padding: 5px;
+        }
+        
+        .transport-type button {
+            padding: 12px 25px;
+            border: none;
+            background: transparent;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .transport-type button.active {
+            background: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: #1a73e8;
+        }
+        
+        .search-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .form-group input, .form-group select {
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .search-btn {
+            background: linear-gradient(to right, #1a73e8, #0d47a1);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            align-self: flex-end;
+            padding: 14px 25px;
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(26, 115, 232, 0.3);
+        }
+        
+        /* Map Section */
+        .map-section {
+            padding: 60px 0;
+        }
+        
+        .map-section h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #1a237e;
+        }
+        
+        .map-container {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            height: 500px;
+            position: relative;
+        }
+        
+        .map-placeholder {
+            height: 100%;
+            background: linear-gradient(45deg, #e8f0fe, #f1f3f4);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #555;
+        }
+        
+        .map-placeholder i {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            color: #1a73e8;
+        }
+        
+        .vehicle-marker {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .vehicle-marker:hover {
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+        
+        .bus-marker {
+            background: #34a853;
+        }
+        
+        .taxi-marker {
+            background: #fbbc05;
+        }
+        
+        .cab-marker {
+            background: #ea4335;
+        }
+        
+        /* Available Vehicles Section */
+        .vehicles-section {
+            padding: 60px 0;
+            background: linear-gradient(rgba(26, 115, 232, 0.03), rgba(13, 71, 161, 0.03));
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #1a237e;
+        }
+        
+        .vehicles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+        
+        .vehicle-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .vehicle-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .vehicle-header {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+        }
+        
+        .vehicle-type {
+            display: flex;
+            align-items: center;
+        }
+        
+        .vehicle-type i {
+            font-size: 1.8rem;
+            margin-right: 10px;
+        }
+        
+        .bus-icon {
+            color: #34a853;
+        }
+        
+        .taxi-icon {
+            color: #fbbc05;
+        }
+        
+        .cab-icon {
+            color: #ea4335;
+        }
+        
+        .vehicle-distance {
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        .vehicle-details {
+            padding: 20px;
+        }
+        
+        .vehicle-details h3 {
+            margin-bottom: 10px;
+            color: #1a237e;
+        }
+        
+        .driver-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .driver-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e8f0fe;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 10px;
+            color: #1a73e8;
+        }
+        
+        .vehicle-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a237e;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .book-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, #1a73e8, #0d47a1);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .book-btn:hover {
+            background: linear-gradient(to right, #0d47a1, #1a73e8);
+            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.3);
+        }
+        
+        /* Footer */
+        footer {
+            background: #1a237e;
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #bbdefb;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: white;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background: #1a73e8;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbdefb;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-content {
+                flex-direction: column;
+            }
+            
+            .hero-text {
+                padding-right: 0;
+                text-align: center;
+                margin-bottom: 40px;
+            }
+            
+            .search-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .vehicles-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .auth-buttons {
+                margin-top: 20px;
+            }
+            
+            .hero-text h1 {
+                font-size: 2.2rem;
+            }
+            
+            .transport-type {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .search-section {
+                padding: 20px;
+            }
+            
+            .vehicle-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-route"></i>
+                <span>TransitFinder</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#map">Live Map</a></li>
+                    <li><a href="#vehicles">Available Vehicles</a></li>
+                    <li><a href="#how-it-works">How it Works</a></li>
+                    <li><a href="#safety">Safety</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <button class="sign-in">Sign In</button>
+                <button class="sign-up">Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1>Find & Book Nearby Transport in Seconds</h1>
+                <p>Locate buses, taxis, and cabs in real-time. Book your ride with just a few taps and get picked up quickly. Safe, reliable, and convenient transportation at your fingertips.</p>
+                <div class="app-badges">
+                    <button class="search-btn" style="padding: 12px 30px; margin-right: 15px;">
+                        <i class="fas fa-play-circle"></i> Get on Google Play
+                    </button>
+                    <button class="search-btn" style="padding: 12px 30px; background: linear-gradient(to right, #000, #333);">
+                        <i class="fab fa-apple"></i> Download on App Store
+                    </button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Transportation App">
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <div class="container">
+        <div class="search-section">
+            <h2>Find Your Ride</h2>
+            <div class="search-options">
+                <div class="transport-type">
+                    <button class="active" id="bus-btn">
+                        <i class="fas fa-bus"></i> Bus
+                    </button>
+                    <button id="taxi-btn">
+                        <i class="fas fa-taxi"></i> Taxi
+                    </button>
+                    <button id="cab-btn">
+                        <i class="fas fa-car"></i> Cab
+                    </button>
+                </div>
+            </div>
+            <div class="search-form">
+                <div class="form-group">
+                    <label for="pickup"><i class="fas fa-map-marker-alt"></i> Pickup Location</label>
+                    <input type="text" id="pickup" placeholder="Enter your current location" value="Times Square, New York">
+                </div>
+                <div class="form-group">
+                    <label for="destination"><i class="fas fa-flag-checkered"></i> Destination (Optional)</label>
+                    <input type="text" id="destination" placeholder="Where do you want to go?">
+                </div>
+                <button class="search-btn" id="find-vehicles">
+                    <i class="fas fa-search"></i> Find Vehicles
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Section -->
+    <section class="map-section" id="map">
+        <div class="container">
+            <h2>Live Transport Map</h2>
+            <div class="map-container">
+                <div class="map-placeholder" id="map-placeholder">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h3>Interactive Map</h3>
+                    <p>Click "Find Vehicles" to see nearby transport options on the map</p>
+                </div>
+                
+                <!-- Vehicle markers (simulated) -->
+                <div class="vehicle-marker bus-marker" style="top: 30%; left: 40%;" data-vehicle-id="1">
+                    <i class="fas fa-bus"></i>
+                </div>
+                <div class="vehicle-marker taxi-marker" style="top: 50%; left: 60%;" data-vehicle-id="2">
+                    <i class="fas fa-taxi"></i>
+                </div>
+                <div class="vehicle-marker cab-marker" style="top: 70%; left: 30%;" data-vehicle-id="3">
+                    <i class="fas fa-car"></i>
+                </div>
+                <div class="vehicle-marker bus-marker" style="top: 40%; left: 70%;" data-vehicle-id="4">
+                    <i class="fas fa-bus"></i>
+                </div>
+                <div class="vehicle-marker taxi-marker" style="top: 60%; left: 20%;" data-vehicle-id="5">
+                    <i class="fas fa-taxi"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Available Vehicles Section -->
+    <section class="vehicles-section" id="vehicles">
+        <div class="container">
+            <h2 class="section-title">Available Vehicles Nearby</h2>
+            <div class="vehicles-grid" id="vehicles-grid">
+                <!-- Vehicle cards will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>TransitFinder</h3>
+                    <p>Your reliable partner for finding and booking public transport, taxis, and cabs. Fast, safe, and convenient.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#map">Live Map</a></li>
+                        <li><a href="#vehicles">Available Vehicles</a></li>
+                        <li><a href="#how-it-works">How it Works</a></li>
+                        <li><a href="#safety">Safety</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="#">Bus Booking</a></li>
+                        <li><a href="#">Taxi Hailing</a></li>
+                        <li><a href="#">Cab Service</a></li>
+                        <li><a href="#">Ride Sharing</a></li>
+                        <li><a href="#">Schedule Ride</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Transport St, City, State 10001</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-envelope"></i> support@transitfinder.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 TransitFinder. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Vehicle data
+        const vehicles = [
+            {
+                id: 1,
+                type: 'bus',
+                name: 'Metro Express Bus',
+                driver: 'Michael Rodriguez',
+                license: 'NY-7890',
+                distance: '0.8 miles',
+                eta: '5 min',
+                capacity: '42 seats',
+                fare: '$2.75',
+                rating: '4.5'
+            },
+            {
+                id: 2,
+                type: 'taxi',
+                name: 'City Yellow Taxi',
+                driver: 'David Chen',
+                license: 'NY-4567',
+                distance: '1.2 miles',
+                eta: '7 min',
+                capacity: '4 passengers',
+                fare: '$3.50 + $2.50/mile',
+                rating: '4.8'
+            },
+            {
+                id: 3,
+                type: 'cab',
+                name: 'Express Cab',
+                driver: 'Sarah Johnson',
+                license: 'NY-1234',
+                distance: '0.5 miles',
+                eta: '3 min',
+                capacity: '4 passengers',
+                fare: '$4.00 + $2.00/mile',
+                rating: '4.7'
+            },
+            {
+                id: 4,
+                type: 'bus',
+                name: 'Downtown Shuttle',
+                driver: 'Robert Williams',
+                license: 'NY-5678',
+                distance: '1.5 miles',
+                eta: '10 min',
+                capacity: '30 seats',
+                fare: '$2.50',
+                rating: '4.3'
+            },
+            {
+                id: 5,
+                type: 'taxi',
+                name: 'Quick Ride Taxi',
+                driver: 'James Wilson',
+                license: 'NY-3456',
+                distance: '2.0 miles',
+                eta: '12 min',
+                capacity: '4 passengers',
+                fare: '$3.00 + $2.75/mile',
+                rating: '4.6'
+            }
+        ];
+
+        // DOM Elements
+        const busBtn = document.getElementById('bus-btn');
+        const taxiBtn = document.getElementById('taxi-btn');
+        const cabBtn = document.getElementById('cab-btn');
+        const findVehiclesBtn = document.getElementById('find-vehicles');
+        const vehiclesGrid = document.getElementById('vehicles-grid');
+        const mapPlaceholder = document.getElementById('map-placeholder');
+        const transportTypeButtons = document.querySelectorAll('.transport-type button');
+        const vehicleMarkers = document.querySelectorAll('.vehicle-marker');
+
+        // Current filter
+        let currentFilter = 'all';
+
+        // Initialize the page with vehicle cards
+        function renderVehicleCards(filter = 'all') {
+            vehiclesGrid.innerHTML = '';
+            
+            const filteredVehicles = filter === 'all' 
+                ? vehicles 
+                : vehicles.filter(vehicle => vehicle.type === filter);
+            
+            filteredVehicles.forEach(vehicle => {
+                const vehicleCard = document.createElement('div');
+                vehicleCard.className = 'vehicle-card';
+                
+                let typeIcon, typeClass;
+                if (vehicle.type === 'bus') {
+                    typeIcon = 'fas fa-bus';
+                    typeClass = 'bus-icon';
+                } else if (vehicle.type === 'taxi') {
+                    typeIcon = 'fas fa-taxi';
+                    typeClass = 'taxi-icon';
+                } else {
+                    typeIcon = 'fas fa-car';
+                    typeClass = 'cab-icon';
+                }
+                
+                vehicleCard.innerHTML = `
+                    <div class="vehicle-header">
+                        <div class="vehicle-type">
+                            <i class="${typeIcon} ${typeClass}"></i>
+                            <span>${vehicle.type.toUpperCase()}</span>
+                        </div>
+                        <div class="vehicle-distance">${vehicle.distance} away</div>
+                    </div>
+                    <div class="vehicle-details">
+                        <h3>${vehicle.name}</h3>
+                        <div class="driver-info">
+                            <div class="driver-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div>
+                                <div><strong>Driver:</strong> ${vehicle.driver}</div>
+                                <div><small>License: ${vehicle.license}</small></div>
+                            </div>
+                        </div>
+                        <div class="vehicle-stats">
+                            <div class="stat">
+                                <div class="stat-value">${vehicle.eta}</div>
+                                <div class="stat-label">ETA</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${vehicle.capacity}</div>
+                                <div class="stat-label">Capacity</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${vehicle.rating}</div>
+                                <div class="stat-label">Rating</div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <strong>Fare:</strong> ${vehicle.fare}
+                        </div>
+                        <button class="book-btn" data-vehicle-id="${vehicle.id}">
+                            <i class="fas fa-car-side"></i> Book This Vehicle
+                        </button>
+                    </div>
+                `;
+                
+                vehiclesGrid.appendChild(vehicleCard);
+            });
+            
+            // Add event listeners to book buttons
+            document.querySelectorAll('.book-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const vehicleId = parseInt(this.getAttribute('data-vehicle-id'));
+                    bookVehicle(vehicleId);
+                });
+            });
+        }
+
+        // Book a vehicle
+        function bookVehicle(vehicleId) {
+            const vehicle = vehicles.find(v => v.id === vehicleId);
+            if (!vehicle) return;
+            
+            const pickupLocation = document.getElementById('pickup').value;
+            const destination = document.getElementById('destination').value || 'Not specified';
+            
+            alert(`Booking confirmed!\n\nVehicle: ${vehicle.name}\nDriver: ${vehicle.driver}\nPickup: ${pickupLocation}\nDestination: ${destination}\nETA: ${vehicle.eta}\nFare: ${vehicle.fare}\n\nYour vehicle is on the way!`);
+            
+            // In a real app, you would send this booking to a backend server
+        }
+
+        // Filter vehicles by type
+        function filterVehicles(type) {
+            currentFilter = type;
+            renderVehicleCards(type);
+            
+            // Show/hide vehicle markers on the map
+            vehicleMarkers.forEach(marker => {
+                const vehicleId = parseInt(marker.getAttribute('data-vehicle-id'));
+                const vehicle = vehicles.find(v => v.id === vehicleId);
+                
+                if (type === 'all' || vehicle.type === type) {
+                    marker.style.display = 'flex';
+                } else {
+                    marker.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderVehicleCards('all');
+            
+            // Transport type buttons
+            transportTypeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    transportTypeButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const type = this.id.replace('-btn', '');
+                    filterVehicles(type);
+                });
+            });
+            
+            // Find vehicles button
+            findVehiclesBtn.addEventListener('click', function() {
+                const pickupLocation = document.getElementById('pickup').value;
+                const destination = document.getElementById('destination').value;
+                
+                if (!pickupLocation.trim()) {
+                    alert('Please enter a pickup location');
+                    return;
+                }
+                
+                // Simulate searching for vehicles
+                mapPlaceholder.innerHTML = `
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <h3>Finding vehicles near ${pickupLocation}</h3>
+                    <p>Searching for available transport options...</p>
+                `;
+                
+                // After a delay, show the "map" with markers
+                setTimeout(() => {
+                    mapPlaceholder.style.display = 'none';
+                    vehicleMarkers.forEach(marker => marker.style.display = 'flex');
+                    
+                    // Show a message about the search
+                    alert(`Found ${vehicles.length} vehicles near ${pickupLocation}${destination ? ` heading towards ${destination}` : ''}`);
+                }, 1500);
+            });
+            
+            // Vehicle marker click events
+            vehicleMarkers.forEach(marker => {
+                marker.addEventListener('click', function() {
+                    const vehicleId = parseInt(this.getAttribute('data-vehicle-id'));
+                    const vehicle = vehicles.find(v => v.id === vehicleId);
+                    
+                    if (vehicle) {
+                        alert(`Vehicle: ${vehicle.name}\nDriver: ${vehicle.driver}\nDistance: ${vehicle.distance}\nETA: ${vehicle.eta}\nFare: ${vehicle.fare}\n\nClick "Book This Vehicle" in the vehicle list to book this vehicle.`);
+                    }
+                });
+            });
+            
+            // Sign in/up buttons
+            document.querySelector('.sign-in').addEventListener('click', function() {
+                alert('Sign in functionality would open a login form or redirect to login page.');
+            });
+            
+            document.querySelector('.sign-up').addEventListener('click', function() {
+                alert('Sign up functionality would open a registration form or redirect to signup page.');
+            });
+        });
+    </script>
+</body>
+</html>
