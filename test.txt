@@ -1,0 +1,1 @@
+Splash → Login → Home → Fuel Quantity → Payment → Confirmation → Receipt → Transaction History
