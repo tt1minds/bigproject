@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Login UI</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f6f8fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 360px;
+      text-align: center;
+    }
+
+    .login-container h1 {
+      font-size: 24px;
+      margin-bottom: 32px;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0 16px 0;
+      border: 1px solid #d1d5da;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    input[type="text"]:focus, input[type="password"]:focus {
+      outline: none;
+      border-color: #0366d6;
+      box-shadow: 0 0 0 1px #0366d6;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #24292f;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #444c56;
+    }
+
+    .links {
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .links a {
+      color: #0366d6;
+      text-decoration: none;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    .logo {
+      font-size: 48px;
+      color: #24292f;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="logo">🐱</div>
+    <h1>Sign in to GitHub</h1>
+
+    <input type="text" id="username" placeholder="Username or email address">
+    <input type="password" id="password" placeholder="Password">
+
+    <button onclick="login()">Sign in</button>
+
+    <div class="links">
+      <p><a href="#">Forgot password?</a></p>
+      <p>New to GitHub? <a href="#">Create an account</a></p>
+    </div>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      if(username && password){
+        alert(`Username: ${username}\nPassword: ${password}`);
+        // Here you can connect to your backend for real authentication
+      } else {
+        alert("Please enter both username and password.");
+      }
+    }
+  </script>
+
+</body>
+</html>
