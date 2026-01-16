@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartFuel App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f6f8fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 350px;
+      text-align: center;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #e65c00;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="container" id="loginPage">
+  <h2>Login</h2>
+  <input type="text" id="phone" placeholder="Phone Number">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+</div>
+
+<div class="container hidden" id="fuelPage">
+  <h2>Select Fuel</h2>
+  <select id="fuelType">
+    <option value="">--Select Fuel--</option>
+    <option value="Petrol">Petrol</option>
+    <option value="Diesel">Diesel</option>
+  </select>
+  <button onclick="nextFuel()">Next</button>
+</div>
+
+<div class="container hidden" id="quantityPage">
+  <h2>Enter Quantity</h2>
+  <p id="fuelSelected"></p>
+  <input type="number" id="liters" placeholder="Liters">
+  <button onclick="nextQuantity()">Next: Payment</button>
+</div>
+
+<div class="container hidden" id="paymentPage">
+  <h2>Payment</h2>
+  <button onclick="pay('Mobile Money')">Pay with Mobile Money</button>
+  <button onclick="pay('Card')">Pay by Card</button>
+</div>
+
+<div class="container hidden" id="receiptPage">
+  <h2>Receipt</h2>
+  <p id="receiptFuel"></p>
+  <p id="receiptLiters"></p>
+  <p id="receiptPayment"></p>
+  <p style="color: green; font-weight: bold;">Transaction Successful! ✅</p>
+  <button onclick="restart()">New Transaction</button>
+</div>
+
+<script>
+  let selectedFuel = '';
+  let liters = '';
+  let paymentMethod = '';
+
+  function login() {
+    const phone = document.getElementById('phone').value;
+    const password = document.getElementById('password').value;
+    if(phone && password) {
+      document.getElementById('loginPage').classList.add('hidden');
+      document.getElementById('fuelPage').classList.remove('hidden');
+    } else {
+      alert("Please enter phone number and password");
+    }
+  }
+
+  function nextFuel() {
+    selectedFuel = document.getElementById('fuelType').value;
+    if(selectedFuel) {
+      document.getElementById('fuelPage').classList.add('hidden');
+      document.getElementById('quantityPage').classList.remove('hidden');
+      document.getElementById('fuelSelected').innerText = "Selected Fuel: " + selectedFuel;
+    } else {
+      alert("Please select a fuel type");
+    }
+  }
+
+  function nextQuantity() {
+    liters = document.getElementById('liters').value;
+    if(liters && liters > 0) {
+      document.getElementById('quantityPage').classList.add('hidden');
+      document.getElementById('paymentPage').classList.remove('hidden');
+    } else {
+      alert("Please enter a valid quantity");
+    }
+  }
+
+  function pay(method) {
+    paymentMethod = method;
+    document.getElementById('paymentPage').classList.add('hidden');
+    document.getElementById('receiptPage').classList.remove('hidden');
+    document.getElementById('receiptFuel').innerText = "Fuel: " + selectedFuel;
+    document.getElementById('receiptLiters').innerText = "Liters: " + liters;
+    document.getElementById('receiptPayment').innerText = "Paid via: " + paymentMethod;
+  }
+
+  function restart() {
+    selectedFuel = '';
+    liters = '';
+    paymentMethod = '';
+    document.getElementById('phone').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('liters').value = '';
+    document.getElementById('fuelType').value = '';
+    document.getElementById('receiptPage').classList.add('hidden');
+    document.getElementById('loginPage').classList.remove('hidden');
+  }
+</script>
+
+</body>
+</html>
+
