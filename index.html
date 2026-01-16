@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransitFinder - Find & Book Nearby Transport</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Homepage specific styles */
+        .hero {
+            padding: 100px 0 60px;
+            background: linear-gradient(rgba(26, 115, 232, 0.05), rgba(13, 71, 161, 0.05));
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3.2rem;
+            margin-bottom: 20px;
+            color: #1a237e;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: #555;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .features {
+            padding: 80px 0;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            padding: 40px 30px;
+            text-align: center;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: #e8f0fe;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 25px;
+            color: #1a73e8;
+            font-size: 2.2rem;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: #1a237e;
+        }
+        
+        .transport-types {
+            padding: 80px 0;
+            background: linear-gradient(rgba(26, 115, 232, 0.03), rgba(13, 71, 161, 0.03));
+        }
+        
+        .transport-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .transport-card {
+            text-align: center;
+            padding: 30px 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
+            transition: transform 0.3s;
+        }
+        
+        .transport-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .transport-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .bus-icon {
+            color: #34a853;
+        }
+        
+        .taxi-icon {
+            color: #fbbc05;
+        }
+        
+        .cab-icon {
+            color: #ea4335;
+        }
+        
+        .transport-card h3 {
+            margin-bottom: 15px;
+            color: #1a237e;
+        }
+        
+        .cta-section {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            color: white;
+        }
+        
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .stats {
+            padding: 60px 0;
+            background: white;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1a73e8;
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-buttons, .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hero-buttons .btn, .cta-buttons .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <a href="index.html">
+                    <i class="fas fa-route"></i>
+                    <span>TransitFinder</span>
+                </a>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="find-ride.html"><i class="fas fa-search"></i> Find Ride</a></li>
+                    <li><a href="live-map.html"><i class="fas fa-map-marked-alt"></i> Live Map</a></li>
+                    <li><a href="my-bookings.html"><i class="fas fa-calendar-check"></i> My Bookings</a></li>
+                    <li><a href="drivers.html"><i class="fas fa-id-card"></i> For Drivers</a></li>
+                    <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <button class="sign-in">Sign In</button>
+                <button class="sign-up">Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Find & Book Nearby Transport in Seconds</h1>
+            <p>Locate buses, taxis, and cabs in real-time. Book your ride with just a few taps and get picked up quickly. Safe, reliable, and convenient transportation at your fingertips.</p>
+            <div class="hero-buttons">
+                <a href="find-ride.html" class="btn"><i class="fas fa-car-side"></i> Book a Ride Now</a>
+                <a href="live-map.html" class="btn btn-secondary"><i class="fas fa-map"></i> View Live Map</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose TransitFinder?</h2>
+            <p class="section-subtitle">We make transportation simple, reliable, and accessible for everyone.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Quick Booking</h3>
+                    <p>Find and book a ride in less than a minute with our simple interface.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Real-Time Tracking</h3>
+                    <p>Track your ride in real-time on our interactive map with live updates.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Safe & Secure</h3>
+                    <p>All drivers are verified and rides are insured for your safety.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transport Types Section -->
+    <section class="transport-types">
+        <div class="container">
+            <h2 class="section-title">Multiple Transport Options</h2>
+            <p class="section-subtitle">Choose from a variety of transport options based on your needs and budget.</p>
+            
+            <div class="transport-grid">
+                <div class="transport-card">
+                    <div class="transport-icon">
+                        <i class="fas fa-bus bus-icon"></i>
+                    </div>
+                    <h3>Public Buses</h3>
+                    <p>Affordable public transport with fixed routes and schedules.</p>
+                    <a href="find-ride.html?type=bus" class="btn btn-outline" style="margin-top: 20px;">Find Buses</a>
+                </div>
+                
+                <div class="transport-card">
+                    <div class="transport-icon">
+                        <i class="fas fa-taxi taxi-icon"></i>
+                    </div>
+                    <h3>Taxis</h3>
+                    <p>Traditional taxis available for immediate pickup and drop-off.</p>
+                    <a href="find-ride.html?type=taxi" class="btn btn-outline" style="margin-top: 20px;">Find Taxis</a>
+                </div>
+                
+                <div class="transport-card">
+                    <div class="transport-icon">
+                        <i class="fas fa-car cab-icon"></i>
+                    </div>
+                    <h3>Ride-Sharing</h3>
+                    <p>Private cars for personal or shared rides at competitive rates.</p>
+                    <a href="find-ride.html?type=cab" class="btn btn-outline" style="margin-top: 20px;">Find Cabs</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">10,000+</div>
+                    <div class="stat-label">Active Riders</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-number">2,500+</div>
+                    <div class="stat-label">Verified Drivers</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Cities Covered</div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Satisfied Customers</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Ride?</h2>
+            <p>Download our app for the best experience with real-time notifications, ride history, and exclusive offers.</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn" style="background: white; color: #1a73e8;">
+                    <i class="fab fa-google-play"></i> Google Play
+                </a>
+                <a href="#" class="btn" style="background: white; color: #1a73e8;">
+                    <i class="fab fa-app-store"></i> App Store
+                </a>
+                <a href="find-ride.html" class="btn btn-outline" style="border-color: white; color: white;">
+                    <i class="fas fa-laptop"></i> Use Web Version
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>TransitFinder</h3>
+                    <p>Your reliable partner for finding and booking public transport, taxis, and cabs. Fast, safe, and convenient.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="find-ride.html">Find Ride</a></li>
+                        <li><a href="live-map.html">Live Map</a></li>
+                        <li><a href="my-bookings.html">My Bookings</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="find-ride.html?type=bus">Bus Booking</a></li>
+                        <li><a href="find-ride.html?type=taxi">Taxi Hailing</a></li>
+                        <li><a href="find-ride.html?type=cab">Cab Service</a></li>
+                        <li><a href="drivers.html">Driver Registration</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Transport St, City, State 10001</li>
+                        <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fas fa-envelope"></i> support@transitfinder.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 TransitFinder. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple script for homepage
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sign in/up buttons
+            document.querySelector('.sign-in').addEventListener('click', function() {
+                alert('Sign in functionality would open a login form.');
+            });
+            
+            document.querySelector('.sign-up').addEventListener('click', function() {
+                alert('Sign up functionality would open a registration form.');
+            });
+        });
+    </script>
+</body>
+</html>
