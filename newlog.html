@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - TransitFinder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Login specific styles */
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.1) 0%, rgba(13, 71, 161, 0.1) 100%);
+            padding: 40px 20px;
+        }
+        
+        .auth-container {
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+        
+        .auth-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .auth-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .auth-header {
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            color: white;
+            padding: 40px 30px 30px;
+            text-align: center;
+        }
+        
+        .auth-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .auth-header p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+        
+        .auth-body {
+            padding: 40px 30px;
+        }
+        
+        .auth-form {
+            margin-bottom: 25px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+            font-size: 1.1rem;
+        }
+        
+        .input-with-icon input {
+            width: 100%;
+            padding: 15px 15px 15px 50px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .input-with-icon input:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .remember-me input {
+            width: 18px;
+            height: 18px;
+        }
+        
+        .forgot-password {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .forgot-password:hover {
+            color: #0d47a1;
+            text-decoration: underline;
+        }
+        
+        .auth-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, #1a73e8, #0d47a1);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .auth-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(26, 115, 232, 0.3);
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .auth-footer a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 5px;
+            transition: color 0.3s;
+        }
+        
+        .auth-footer a:hover {
+            color: #0d47a1;
+            text-decoration: underline;
+        }
+        
+        .back-to-home {
+            text-align: center;
+            margin-top: 25px;
+        }
+        
+        .back-to-home a {
+            color: #666;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+        
+        .back-to-home a:hover {
+            color: #1a73e8;
+        }
+        
+        .error-message {
+            background: #fce8e6;
+            color: #d93025;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .success-message {
+            background: #e6f4ea;
+            color: #0d8a3c;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .login-hint {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #666;
+            border-left: 4px solid #1a73e8;
+        }
+        
+        .login-hint strong {
+            color: #1a237e;
+        }
+        
+        @media (max-width: 480px) {
+            .auth-header {
+                padding: 30px 20px 25px;
+            }
+            
+            .auth-body {
+                padding: 30px 20px;
+            }
+            
+            .remember-forgot {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth Page (No Header/Footer to keep it clean) -->
+    <div class="auth-page">
+        <div class="auth-container">
+            <div class="auth-card">
+                <!-- Header -->
+                <div class="auth-header">
+                    <h1>Welcome Back</h1>
+                    <p>Sign in to your TransitFinder account</p>
+                </div>
+                
+                <!-- Body -->
+                <div class="auth-body">
+                    <!-- Error/Success Messages -->
+                    <div class="error-message" id="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span id="error-text">Invalid email or password</span>
+                    </div>
+                    
+                    <div class="success-message" id="success-message">
+                        <i class="fas fa-check-circle"></i>
+                        <span id="success-text">Login successful! Redirecting...</span>
+                    </div>
+                    
+                    <!-- Login Form -->
+                    <form class="auth-form" id="login-form">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                            </div>
+                        </div>
+                        
+                        <div class="remember-forgot">
+                            <div class="remember-me">
+                                <input type="checkbox" id="remember" name="remember">
+                                <label for="remember">Remember me</label>
+                            </div>
+                            <a href="#" class="forgot-password" id="forgot-password">Forgot password?</a>
+                        </div>
+                        
+                        <button type="submit" class="auth-btn" id="login-btn">
+                            <i class="fas fa-sign-in-alt"></i>
+                            Sign In
+                        </button>
+                    </form>
+                    
+                    <!-- Demo Credentials Hint -->
+                    <div class="login-hint">
+                        <strong>Demo Credentials:</strong><br>
+                        Email: <code>user@transitfinder.com</code><br>
+                        Password: <code>password123</code>
+                    </div>
+                    
+                    <!-- Sign Up Link -->
+                    <div class="auth-footer">
+                        Don't have an account?
+                        <a href="signup.html">Sign up here</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Back to Home -->
+            <div class="back-to-home">
+                <a href="index.html">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal" id="forgot-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Reset Password</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Enter your email address and we'll send you a link to reset your password.</p>
+                <div class="form-group">
+                    <label for="reset-email">Email Address</label>
+                    <input type="email" id="reset-email" class="form-control" placeholder="Enter your email">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline close-modal">Cancel</button>
+                <button class="btn" id="send-reset">Send Reset Link</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Login functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('login-form');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+            const loginBtn = document.getElementById('login-btn');
+            const forgotPasswordLink = document.getElementById('forgot-password');
+            const forgotModal = document.getElementById('forgot-modal');
+            const closeModalButtons = document.querySelectorAll('.close-modal');
+            const sendResetBtn = document.getElementById('send-reset');
+            
+            // Test credentials (for demo purposes)
+            const testCredentials = [
+                { email: 'user@transitfinder.com', password: 'password123' },
+                { email: 'demo@example.com', password: 'demo123' },
+                { email: 'test@test.com', password: 'test123' }
+            ];
+            
+            // Auto-fill demo credentials for easier testing
+            window.onload = function() {
+                emailInput.value = 'user@transitfinder.com';
+                passwordInput.value = 'password123';
+            };
+            
+            // Login form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = emailInput.value.trim();
+                const password = passwordInput.value;
+                
+                // Basic validation
+                if (!email || !password) {
+                    showError('Please fill in all fields');
+                    return;
+                }
+                
+                if (!isValidEmail(email)) {
+                    showError('Please enter a valid email address');
+                    return;
+                }
+                
+                // Show loading state
+                loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+                loginBtn.disabled = true;
+                
+                // Simulate API call
+                setTimeout(() => {
+                    // Check against test credentials (in real app, this would be a server check)
+                    const isValid = testCredentials.some(cred => 
+                        cred.email === email && cred.password === password
+                    );
+                    
+                    if (isValid) {
+                        showSuccess('Login successful! Redirecting to homepage...');
+                        
+                        // Store login state in localStorage
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('userEmail', email);
+                        localStorage.setItem('userName', email.split('@')[0]);
+                        
+                        // Redirect after delay
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 1500);
+                    } else {
+                        showError('Invalid email or password. Please check your credentials.');
+                        loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+                        loginBtn.disabled = false;
+                    }
+                }, 1500);
+            });
+            
+            // Forgot password link
+            forgotPasswordLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                forgotModal.style.display = 'block';
+            });
+            
+            // Close modal
+            closeModalButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    forgotModal.style.display = 'none';
+                });
+            });
+            
+            // Send reset link
+            sendResetBtn.addEventListener('click', function() {
+                const resetEmail = document.getElementById('reset-email').value.trim();
+                
+                if (!resetEmail || !isValidEmail(resetEmail)) {
+                    alert('Please enter a valid email address');
+                    return;
+                }
+                
+                // Simulate sending reset link
+                sendResetBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                sendResetBtn.disabled = true;
+                
+                setTimeout(() => {
+                    alert(`Password reset link sent to ${resetEmail}. Please check your email.`);
+                    forgotModal.style.display = 'none';
+                    sendResetBtn.innerHTML = 'Send Reset Link';
+                    sendResetBtn.disabled = false;
+                    document.getElementById('reset-email').value = '';
+                }, 1500);
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === forgotModal) {
+                    forgotModal.style.display = 'none';
+                }
+            });
+            
+            // Helper functions
+            function showError(message) {
+                errorMessage.style.display = 'flex';
+                document.getElementById('error-text').textContent = message;
+                successMessage.style.display = 'none';
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            }
+            
+            function showSuccess(message) {
+                successMessage.style.display = 'flex';
+                document.getElementById('success-text').textContent = message;
+                errorMessage.style.display = 'none';
+            }
+            
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+            
+            // Check if user is already logged in
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                // Show logged in state briefly, then redirect
+                document.querySelector('.auth-header h1').textContent = 'Already Logged In';
+                document.querySelector('.auth-header p').textContent = 'Redirecting to homepage...';
+                loginForm.style.display = 'none';
+                document.querySelector('.auth-footer').style.display = 'none';
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            }
+            
+            // Modal styles
+            const modalStyle = document.createElement('style');
+            modalStyle.textContent = `
+                .modal {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.5);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 1000;
+                }
+                
+                .modal-content {
+                    background: white;
+                    border-radius: 15px;
+                    width: 90%;
+                    max-width: 500px;
+                    overflow: hidden;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                    animation: modalFadeIn 0.3s ease;
+                }
+                
+                @keyframes modalFadeIn {
+                    from { opacity: 0; transform: translateY(-20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+                
+                .modal-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 20px 25px;
+                    border-bottom: 1px solid #e0e0e0;
+                }
+                
+                .modal-header h3 {
+                    margin: 0;
+                    color: #1a237e;
+                }
+                
+                .close-modal {
+                    background: none;
+                    border: none;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    color: #666;
+                    transition: color 0.3s;
+                }
+                
+                .close-modal:hover {
+                    color: #1a73e8;
+                }
+                
+                .modal-body {
+                    padding: 25px;
+                }
+                
+                .modal-footer {
+                    padding: 20px 25px;
+                    border-top: 1px solid #e0e0e0;
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 15px;
+                }
+            `;
+            document.head.appendChild(modalStyle);
+        });
+    </script>
+</body>
+</html>
