@@ -1,49 +1,1484 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rwanda Go</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - TransitFinder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Unified Signup Container */
+        .unified-signup {
+            display: flex;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            min-height: 700px;
+        }
+        
+        /* Left Panel - Account Type Selection */
+        .account-type-panel {
+            flex: 1;
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .account-type-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+            opacity: 0.1;
+        }
+        
+        .panel-header {
+            margin-bottom: 40px;
+            z-index: 1;
+        }
+        
+        .panel-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .panel-header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .account-type-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 40px;
+            z-index: 1;
+        }
+        
+        .account-type-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+        
+        .account-type-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(10px);
+        }
+        
+        .account-type-card.active {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: white;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .account-type-card.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: white;
+        }
+        
+        .account-type-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+        }
+        
+        .account-type-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .account-type-card p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        
+        .account-features {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .account-features li {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .account-features li i {
+            color: #4fc3f7;
+        }
+        
+        .account-type-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .panel-footer {
+            margin-top: auto;
+            z-index: 1;
+        }
+        
+        .panel-footer p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        
+        .back-to-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        .back-to-home:hover {
+            opacity: 0.9;
+        }
+        
+        /* Right Panel - Registration Forms */
+        .registration-panel {
+            flex: 1.5;
+            padding: 40px;
+            overflow-y: auto;
+            max-height: 700px;
+        }
+        
+        .form-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .form-header h2 {
+            font-size: 2rem;
+            color: #1a237e;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        /* Form Styles */
+        .registration-form {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .registration-form.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-section h3 {
+            font-size: 1.3rem;
+            color: #1a237e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .form-group label.required::after {
+            content: ' *';
+            color: #ea4335;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+            font-size: 1.1rem;
+        }
+        
+        .input-with-icon input,
+        .input-with-icon select {
+            padding-left: 50px;
+        }
+        
+        /* Password Strength */
+        .password-strength {
+            margin-top: 8px;
+            height: 5px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s, background 0.3s;
+        }
+        
+        .strength-weak { width: 25%; background: #ea4335; }
+        .strength-fair { width: 50%; background: #fbbc05; }
+        .strength-good { width: 75%; background: #1a73e8; }
+        .strength-strong { width: 100%; background: #34a853; }
+        
+        .strength-text {
+            font-size: 0.85rem;
+            margin-top: 5px;
+            color: #666;
+        }
+        
+        /* Password Requirements */
+        .password-requirements {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #666;
+            border-left: 4px solid #1a73e8;
+        }
+        
+        .password-requirements ul {
+            margin: 5px 0;
+            padding-left: 20px;
+        }
+        
+        .password-requirements li {
+            margin-bottom: 3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .password-requirements .valid {
+            color: #34a853;
+        }
+        
+        .password-requirements .invalid {
+            color: #ea4335;
+        }
+        
+        /* Driver Specific Sections */
+        .driver-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #1a73e8;
+        }
+        
+        .vehicle-photo-upload {
+            border: 2px dashed #e0e0e0;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+            margin-top: 15px;
+        }
+        
+        .vehicle-photo-upload:hover {
+            border-color: #1a73e8;
+            background: #e8f0fe;
+        }
+        
+        .service-areas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .area-tag {
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+        
+        .add-area {
+            background: transparent;
+            border: 2px dashed #1a73e8;
+            color: #1a73e8;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Service Type Selection */
+        .service-type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .service-type-option {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .service-type-option:hover {
+            border-color: #1a73e8;
+            transform: translateY(-5px);
+        }
+        
+        .service-type-option.selected {
+            border-color: #1a73e8;
+            background: #e8f0fe;
+            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.1);
+        }
+        
+        .service-type-icon {
+            font-size: 2rem;
+            color: #1a73e8;
+            margin-bottom: 10px;
+        }
+        
+        /* Terms and Conditions */
+        .terms-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            max-height: 150px;
+            overflow-y: auto;
+            border-left: 4px solid #1a73e8;
+        }
+        
+        .terms-agreement {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .terms-agreement input {
+            margin-top: 5px;
+            flex-shrink: 0;
+        }
+        
+        .terms-agreement label {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #666;
+        }
+        
+        .terms-agreement a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, #1a73e8, #0d47a1);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(26, 115, 232, 0.3);
+        }
+        
+        .driver-submit-btn {
+            background: linear-gradient(to right, #34a853, #2e7d32);
+        }
+        
+        .driver-submit-btn:hover {
+            box-shadow: 0 7px 15px rgba(52, 168, 83, 0.3);
+        }
+        
+        /* Login Link */
+        .login-link {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .login-link a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+        
+        /* Status Messages */
+        .status-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .error-message {
+            background: #fce8e6;
+            color: #d93025;
+            border-left: 4px solid #ea4335;
+        }
+        
+        .success-message {
+            background: #e6f4ea;
+            color: #0d8a3c;
+            border-left: 4px solid #34a853;
+        }
+        
+        /* Earnings Preview for Driver */
+        .earnings-preview {
+            background: linear-gradient(135deg, #1a73e8, #0d47a1);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .earnings-preview h4 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .earnings-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        /* Document Upload */
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .document-upload {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .document-upload.uploaded {
+            border-color: #34a853;
+            background: #e6f4ea;
+        }
+        
+        .document-upload i {
+            font-size: 1.5rem;
+            color: #1a73e8;
+            margin-bottom: 10px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .unified-signup {
+                flex-direction: column;
+                min-height: auto;
+            }
+            
+            .account-type-panel {
+                padding: 30px;
+            }
+            
+            .account-type-options {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            
+            .account-type-card {
+                flex: 1;
+                min-width: 250px;
+            }
+            
+            .registration-panel {
+                max-height: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .service-type-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .account-type-card {
+                min-width: 100%;
+            }
+            
+            .panel-header h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .account-type-panel,
+            .registration-panel {
+                padding: 20px;
+            }
+            
+            .service-type-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .documents-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-header h2 {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <div class="container">
+        <div class="unified-signup">
+            <!-- Left Panel - Account Type Selection -->
+            <div class="account-type-panel">
+                <div class="panel-header">
+                    <h1>Join TransitFinder</h1>
+                    <p>Choose your account type and start your journey with us</p>
+                </div>
+                
+                <div class="account-type-options">
+                    <!-- Rider Option -->
+                    <div class="account-type-card active" data-account-type="rider">
+                        <div class="account-type-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3>Rider Account</h3>
+                        <p>Book rides, track vehicles, and travel conveniently</p>
+                        <div class="account-features">
+                            <li><i class="fas fa-check"></i> Book buses, taxis & cabs</li>
+                            <li><i class="fas fa-check"></i> Real-time tracking</li>
+                            <li><i class="fas fa-check"></i> Secure payments</li>
+                            <li><i class="fas fa-check"></i> Ride history & receipts</li>
+                        </div>
+                        <div class="account-type-badge">Most Popular</div>
+                    </div>
+                    
+                    <!-- Driver Option -->
+                    <div class="account-type-card" data-account-type="driver">
+                        <div class="account-type-icon">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <h3>Driver Account</h3>
+                        <p>Start earning by offering rides on our platform</p>
+                        <div class="account-features">
+                            <li><i class="fas fa-check"></i> Flexible schedule</li>
+                            <li><i class="fas fa-check"></i> Weekly payments</li>
+                            <li><i class="fas fa-check"></i> Passenger insurance</li>
+                            <li><i class="fas fa-check"></i> 24/7 support</li>
+                        </div>
+                        <div class="account-type-badge">Earn Money</div>
+                    </div>
+                </div>
+                
+                <div class="panel-footer">
+                    <p>Already have an account? Sign in to access your dashboard.</p>
+                    <a href="login.html" class="back-to-home">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Sign In
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Right Panel - Registration Forms -->
+            <div class="registration-panel">
+                <!-- Status Messages -->
+                <div class="error-message" id="error-message">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="error-text"></span>
+                </div>
+                
+                <div class="success-message" id="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="success-text"></span>
+                </div>
+                
+                <!-- Rider Registration Form -->
+                <div class="registration-form active" id="rider-form">
+                    <div class="form-header">
+                        <h2><i class="fas fa-user-plus"></i> Rider Registration</h2>
+                        <p>Create your rider account in just a few steps</p>
+                    </div>
+                    
+                    <form id="rider-registration-form">
+                        <!-- Basic Information -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-user"></i> Basic Information</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="rider-first-name" class="required">First Name</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-user"></i>
+                                        <input type="text" id="rider-first-name" class="form-control" placeholder="John" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rider-last-name" class="required">Last Name</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-user"></i>
+                                        <input type="text" id="rider-last-name" class="form-control" placeholder="Doe" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Contact Information -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-address-card"></i> Contact Information</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="rider-email" class="required">Email Address</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-envelope"></i>
+                                        <input type="email" id="rider-email" class="form-control" placeholder="john.doe@example.com" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rider-phone" class="required">Phone Number</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-phone"></i>
+                                        <input type="tel" id="rider-phone" class="form-control" placeholder="+1 (555) 123-4567" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Password -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-lock"></i> Account Security</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="rider-password" class="required">Password</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-lock"></i>
+                                        <input type="password" id="rider-password" class="form-control" placeholder="Create a password" required>
+                                    </div>
+                                    <div class="password-strength">
+                                        <div class="strength-bar" id="rider-strength-bar"></div>
+                                    </div>
+                                    <div class="strength-text" id="rider-strength-text">Password strength: None</div>
+                                    
+                                    <div class="password-requirements" id="rider-password-requirements">
+                                        <strong>Password must contain:</strong>
+                                        <ul>
+                                            <li id="rider-req-length" class="invalid">
+                                                <i class="fas fa-circle" style="font-size: 0.5rem;"></i> At least 8 characters
+                                            </li>
+                                            <li id="rider-req-uppercase" class="invalid">
+                                                <i class="fas fa-circle" style="font-size: 0.5rem;"></i> One uppercase letter
+                                            </li>
+                                            <li id="rider-req-lowercase" class="invalid">
+                                                <i class="fas fa-circle" style="font-size: 0.5rem;"></i> One lowercase letter
+                                            </li>
+                                            <li id="rider-req-number" class="invalid">
+                                                <i class="fas fa-circle" style="font-size: 0.5rem;"></i> One number
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="rider-confirm-password" class="required">Confirm Password</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-lock"></i>
+                                        <input type="password" id="rider-confirm-password" class="form-control" placeholder="Confirm your password" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Terms and Conditions -->
+                        <div class="form-section">
+                            <div class="terms-agreement">
+                                <input type="checkbox" id="rider-terms" required>
+                                <label for="rider-terms">
+                                    I agree to the <a href="about.html#terms">Terms of Service</a> and <a href="about.html#privacy">Privacy Policy</a>. I confirm that I am at least 18 years old.
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" class="submit-btn" id="rider-submit-btn">
+                            <i class="fas fa-user-plus"></i>
+                            Create Rider Account
+                        </button>
+                    </form>
+                    
+                    <div class="login-link">
+                        Already have an account? <a href="login.html">Sign in here</a>
+                    </div>
+                </div>
+                
+                <!-- Driver Registration Form -->
+                <div class="registration-form" id="driver-form">
+                    <div class="form-header">
+                        <h2><i class="fas fa-id-card"></i> Driver Registration</h2>
+                        <p>Join our driver network and start earning today</p>
+                    </div>
+                    
+                    <form id="driver-registration-form">
+                        <!-- Personal Information -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-user"></i> Personal Information</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="driver-first-name" class="required">First Name</label>
+                                    <input type="text" id="driver-first-name" class="form-control" placeholder="John" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="driver-last-name" class="required">Last Name</label>
+                                    <input type="text" id="driver-last-name" class="form-control" placeholder="Doe" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="driver-email" class="required">Email Address</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-envelope"></i>
+                                        <input type="email" id="driver-email" class="form-control" placeholder="john.doe@example.com" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="driver-phone" class="required">Phone Number</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-phone"></i>
+                                        <input type="tel" id="driver-phone" class="form-control" placeholder="+1 (555) 123-4567" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Vehicle Information -->
+                        <div class="driver-section">
+                            <h3><i class="fas fa-car"></i> Vehicle Information</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="vehicle-make" class="required">Make</label>
+                                    <input type="text" id="vehicle-make" class="form-control" placeholder="Toyota" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehicle-model" class="required">Model</label>
+                                    <input type="text" id="vehicle-model" class="form-control" placeholder="Camry" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehicle-year" class="required">Year</label>
+                                    <input type="number" id="vehicle-year" class="form-control" placeholder="2022" min="2000" max="2024" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehicle-color" class="required">Color</label>
+                                    <input type="text" id="vehicle-color" class="form-control" placeholder="Blue" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehicle-plate" class="required">License Plate</label>
+                                    <input type="text" id="vehicle-plate" class="form-control" placeholder="ABC123" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehicle-seats" class="required">Passenger Seats</label>
+                                    <select id="vehicle-seats" class="form-control" required>
+                                        <option value="">Select seats</option>
+                                        <option value="2">2 seats</option>
+                                        <option value="4">4 seats</option>
+                                        <option value="6">6 seats</option>
+                                        <option value="8">8+ seats</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <!-- Vehicle Photo Upload -->
+                            <div class="vehicle-photo-upload" onclick="uploadVehiclePhoto()">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <h4>Upload Vehicle Photos</h4>
+                                <p>Click to upload photos of your vehicle (Optional)</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Service Type Selection -->
+                        <div class="driver-section">
+                            <h3><i class="fas fa-briefcase"></i> Service Type</h3>
+                            <p>Choose the services you want to offer:</p>
+                            <div class="service-type-grid">
+                                <div class="service-type-option" data-service="taxi">
+                                    <div class="service-type-icon">
+                                        <i class="fas fa-taxi"></i>
+                                    </div>
+                                    <h4>Taxi</h4>
+                                    <p>Metered rides</p>
+                                </div>
+                                <div class="service-type-option" data-service="cab">
+                                    <div class="service-type-icon">
+                                        <i class="fas fa-car"></i>
+                                    </div>
+                                    <h4>Cab</h4>
+                                    <p>Pre-booked rides</p>
+                                </div>
+                                <div class="service-type-option" data-service="bus">
+                                    <div class="service-type-icon">
+                                        <i class="fas fa-bus"></i>
+                                    </div>
+                                    <h4>Shuttle</h4>
+                                    <p>Multiple passengers</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Service Areas -->
+                        <div class="driver-section">
+                            <h3><i class="fas fa-map-marked-alt"></i> Service Areas</h3>
+                            <p>Add areas where you want to provide service:</p>
+                            <div class="service-areas" id="service-areas">
+                                <!-- Areas will be added here -->
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <input type="text" id="new-area" class="form-control" placeholder="Enter area (e.g., Manhattan, Brooklyn)" style="width: 300px; display: inline-block;">
+                                <button type="button" class="add-area" onclick="addServiceArea()">
+                                    <i class="fas fa-plus"></i> Add Area
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Driver Account Security -->
+                        <div class="form-section">
+                            <h3><i class="fas fa-lock"></i> Account Security</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="driver-password" class="required">Password</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-lock"></i>
+                                        <input type="password" id="driver-password" class="form-control" placeholder="Create a password" required>
+                                    </div>
+                                    <div class="password-strength">
+                                        <div class="strength-bar" id="driver-strength-bar"></div>
+                                    </div>
+                                    <div class="strength-text" id="driver-strength-text">Password strength: None</div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="driver-confirm-password" class="required">Confirm Password</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-lock"></i>
+                                        <input type="password" id="driver-confirm-password" class="form-control" placeholder="Confirm your password" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Required Documents -->
+                        <div class="driver-section">
+                            <h3><i class="fas fa-file-contract"></i> Required Documents</h3>
+                            <p>You'll need to upload these documents after registration:</p>
+                            <div class="documents-grid">
+                                <div class="document-upload">
+                                    <i class="fas fa-id-card"></i>
+                                    <h4>Driver's License</h4>
+                                    <p>Valid driver's license</p>
+                                </div>
+                                <div class="document-upload">
+                                    <i class="fas fa-file-alt"></i>
+                                    <h4>Vehicle Registration</h4>
+                                    <p>Current registration</p>
+                                </div>
+                                <div class="document-upload">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <h4>Insurance</h4>
+                                    <p>Valid insurance</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Earnings Preview -->
+                        <div class="earnings-preview">
+                            <h4><i class="fas fa-calculator"></i> Potential Earnings</h4>
+                            <p>Based on average driver data:</p>
+                            <div class="earnings-amount" id="earnings-amount">$750-1,200/week</div>
+                            <p>Flexible hours • Weekly payments • No commitment</p>
+                        </div>
+                        
+                        <!-- Driver Terms and Conditions -->
+                        <div class="terms-box">
+                            <h4><i class="fas fa-file-signature"></i> Driver Agreement</h4>
+                            <p>By registering as a driver, you agree to:</p>
+                            <p>• Maintain valid license, registration, and insurance</p>
+                            <p>• Pass a background check</p>
+                            <p>• Maintain a 4.5+ star rating</p>
+                            <p>• Follow all traffic laws and regulations</p>
+                        </div>
+                        
+                        <div class="terms-agreement">
+                            <input type="checkbox" id="driver-terms" required>
+                            <label for="driver-terms">
+                                I have read and agree to the Driver Agreement, Terms of Service, and Privacy Policy.
+                            </label>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" class="submit-btn driver-submit-btn" id="driver-submit-btn">
+                            <i class="fas fa-id-card"></i>
+                            Apply as Driver
+                        </button>
+                    </form>
+                    
+                    <div class="login-link">
+                        Already have an account? <a href="login.html">Sign in here</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<header>
-  <h1>Rwanda Go</h1>
-
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="book.html">Find Ride</a>
-    <a href="#">Live Map</a>
-    <a href="#">My Bookings</a>
-    <a href="driver.html">For Drivers</a>
-    <a href="#">About</a>
-    <a href="login.html">Login</a>
-    <a href="register.html">Sign Up</a>
-  </nav>
-</header>
-
-<main>
-  <section class="hero">
-    <h2>Find & Book Nearby Transport in Seconds</h2>
-    <p>Locate buses and cabs near you easily.</p>
-    <a href="book.html">Book a Ride</a>
-  </section>
-
-  <section class="features">
-    <h3>Why Choose Rwanda Go?</h3>
-    <ul>
-      <li>Quick booking</li>
-      <li>Reliable drivers</li>
-      <li>Easy to use</li>
-    </ul>
-  </section>
-</main>
-
-<footer>
-  <p>© 2026 Rwanda Go – Rwanda</p>
-</footer>
-
+    <script>
+        // Unified Signup System
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const accountTypeCards = document.querySelectorAll('.account-type-card');
+            const riderForm = document.getElementById('rider-form');
+            const driverForm = document.getElementById('driver-form');
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+            const serviceTypeOptions = document.querySelectorAll('.service-type-option');
+            let selectedServices = [];
+            
+            // Initialize forms
+            initializeRiderForm();
+            initializeDriverForm();
+            
+            // Account type selection
+            accountTypeCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const accountType = this.getAttribute('data-account-type');
+                    
+                    // Update active card
+                    accountTypeCards.forEach(c => c.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding form
+                    riderForm.classList.remove('active');
+                    driverForm.classList.remove('active');
+                    
+                    if (accountType === 'rider') {
+                        riderForm.classList.add('active');
+                    } else {
+                        driverForm.classList.add('active');
+                    }
+                });
+            });
+            
+            // Service type selection for drivers
+            serviceTypeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const service = this.getAttribute('data-service');
+                    const isSelected = this.classList.contains('selected');
+                    
+                    if (isSelected) {
+                        this.classList.remove('selected');
+                        selectedServices = selectedServices.filter(s => s !== service);
+                    } else {
+                        this.classList.add('selected');
+                        selectedServices.push(service);
+                    }
+                });
+            });
+            
+            // Initialize Rider Form
+            function initializeRiderForm() {
+                const form = document.getElementById('rider-registration-form');
+                const passwordInput = document.getElementById('rider-password');
+                const confirmInput = document.getElementById('rider-confirm-password');
+                const strengthBar = document.getElementById('rider-strength-bar');
+                const strengthText = document.getElementById('rider-strength-text');
+                const submitBtn = document.getElementById('rider-submit-btn');
+                
+                // Password strength checker
+                passwordInput.addEventListener('input', function() {
+                    checkPasswordStrength(this.value, strengthBar, strengthText, 'rider');
+                });
+                
+                // Form submission
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Get form values
+                    const firstName = document.getElementById('rider-first-name').value.trim();
+                    const lastName = document.getElementById('rider-last-name').value.trim();
+                    const email = document.getElementById('rider-email').value.trim();
+                    const phone = document.getElementById('rider-phone').value.trim();
+                    const password = passwordInput.value;
+                    const confirmPassword = confirmInput.value;
+                    const termsAccepted = document.getElementById('rider-terms').checked;
+                    
+                    // Validation
+                    let errors = validateRiderForm(firstName, lastName, email, phone, password, confirmPassword, termsAccepted);
+                    
+                    if (errors.length > 0) {
+                        showError(errors.join('<br>'));
+                        return;
+                    }
+                    
+                    // Show loading state
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+                    submitBtn.disabled = true;
+                    
+                    // Simulate API call
+                    setTimeout(() => {
+                        // Store user data
+                        const userData = {
+                            type: 'rider',
+                            firstName,
+                            lastName,
+                            email,
+                            phone,
+                            createdAt: new Date().toISOString()
+                        };
+                        
+                        localStorage.setItem('userData', JSON.stringify(userData));
+                        localStorage.setItem('userType', 'rider');
+                        
+                        // Show success
+                        showSuccess('Rider account created successfully! Redirecting to dashboard...');
+                        
+                        // Redirect
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 2000);
+                    }, 1500);
+                });
+            }
+            
+            // Initialize Driver Form
+            function initializeDriverForm() {
+                const form = document.getElementById('driver-registration-form');
+                const passwordInput = document.getElementById('driver-password');
+                const confirmInput = document.getElementById('driver-confirm-password');
+                const strengthBar = document.getElementById('driver-strength-bar');
+                const strengthText = document.getElementById('driver-strength-text');
+                const submitBtn = document.getElementById('driver-submit-btn');
+                
+                // Password strength checker
+                passwordInput.addEventListener('input', function() {
+                    checkPasswordStrength(this.value, strengthBar, strengthText, 'driver');
+                });
+                
+                // Vehicle year validation
+                document.getElementById('vehicle-year').addEventListener('input', function() {
+                    const year = parseInt(this.value);
+                    if (year < 2000 || year > 2024) {
+                        this.style.borderColor = '#ea4335';
+                    } else {
+                        this.style.borderColor = '';
+                    }
+                });
+                
+                // Form submission
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Get form values
+                    const firstName = document.getElementById('driver-first-name').value.trim();
+                    const lastName = document.getElementById('driver-last-name').value.trim();
+                    const email = document.getElementById('driver-email').value.trim();
+                    const phone = document.getElementById('driver-phone').value.trim();
+                    const password = passwordInput.value;
+                    const confirmPassword = confirmInput.value;
+                    const vehicleMake = document.getElementById('vehicle-make').value.trim();
+                    const vehicleModel = document.getElementById('vehicle-model').value.trim();
+                    const vehicleYear = document.getElementById('vehicle-year').value.trim();
+                    const vehicleColor = document.getElementById('vehicle-color').value.trim();
+                    const vehiclePlate = document.getElementById('vehicle-plate').value.trim();
+                    const vehicleSeats = document.getElementById('vehicle-seats').value;
+                    const termsAccepted = document.getElementById('driver-terms').checked;
+                    
+                    // Validation
+                    let errors = validateDriverForm(
+                        firstName, lastName, email, phone, password, confirmPassword,
+                        vehicleMake, vehicleModel, vehicleYear, vehicleColor, vehiclePlate, vehicleSeats,
+                        termsAccepted
+                    );
+                    
+                    if (errors.length > 0) {
+                        showError(errors.join('<br>'));
+                        return;
+                    }
+                    
+                    if (selectedServices.length === 0) {
+                        showError('Please select at least one service type');
+                        return;
+                    }
+                    
+                    // Show loading state
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting Application...';
+                    submitBtn.disabled = true;
+                    
+                    // Simulate API call
+                    setTimeout(() => {
+                        // Store driver data
+                        const driverData = {
+                            type: 'driver',
+                            personal: { firstName, lastName, email, phone },
+                            vehicle: { make: vehicleMake, model: vehicleModel, year: vehicleYear, 
+                                     color: vehicleColor, plate: vehiclePlate, seats: vehicleSeats },
+                            services: selectedServices,
+                            serviceAreas: getServiceAreas(),
+                            createdAt: new Date().toISOString(),
+                            status: 'pending_verification'
+                        };
+                        
+                        localStorage.setItem('driverData', JSON.stringify(driverData));
+                        localStorage.setItem('userType', 'driver');
+                        localStorage.setItem('driverApplicationSubmitted', 'true');
+                        
+                        // Show success
+                        showSuccess('Driver application submitted successfully! You will receive a verification email within 24 hours.');
+                        
+                        // Redirect
+                        setTimeout(() => {
+                            window.location.href = 'driver-dashboard.html';
+                        }, 3000);
+                    }, 2000);
+                });
+            }
+            
+            // Validation functions
+            function validateRiderForm(firstName, lastName, email, phone, password, confirmPassword, termsAccepted) {
+                let errors = [];
+                
+                if (!firstName) errors.push('First name is required');
+                if (!lastName) errors.push('Last name is required');
+                
+                if (!email) {
+                    errors.push('Email is required');
+                } else if (!isValidEmail(email)) {
+                    errors.push('Please enter a valid email address');
+                }
+                
+                if (!phone) {
+                    errors.push('Phone number is required');
+                }
+                
+                if (!password) {
+                    errors.push('Password is required');
+                } else if (password.length < 8) {
+                    errors.push('Password must be at least 8 characters long');
+                }
+                
+                if (password !== confirmPassword) {
+                    errors.push('Passwords do not match');
+                }
+                
+                if (!termsAccepted) {
+                    errors.push('You must agree to the Terms of Service and Privacy Policy');
+                }
+                
+                return errors;
+            }
+            
+            function validateDriverForm(firstName, lastName, email, phone, password, confirmPassword,
+                                      vehicleMake, vehicleModel, vehicleYear, vehicleColor, vehiclePlate, vehicleSeats,
+                                      termsAccepted) {
+                let errors = [];
+                
+                // Personal info validation
+                errors.push(...validateRiderForm(firstName, lastName, email, phone, password, confirmPassword, termsAccepted));
+                
+                // Vehicle validation
+                if (!vehicleMake) errors.push('Vehicle make is required');
+                if (!vehicleModel) errors.push('Vehicle model is required');
+                
+                if (!vehicleYear) {
+                    errors.push('Vehicle year is required');
+                } else if (vehicleYear < 2000 || vehicleYear > 2024) {
+                    errors.push('Please enter a valid vehicle year (2000-2024)');
+                }
+                
+                if (!vehicleColor) errors.push('Vehicle color is required');
+                if (!vehiclePlate) errors.push('License plate is required');
+                if (!vehicleSeats) errors.push('Please select number of passenger seats');
+                
+                return errors;
+            }
+            
+            // Password strength checker
+            function checkPasswordStrength(password, strengthBar, strengthText, prefix) {
+                let strength = 0;
+                let text = '';
+                let color = '';
+                
+                // Check password length
+                if (password.length >= 8) strength += 25;
+                
+                // Check for uppercase letters
+                if (/[A-Z]/.test(password)) strength += 25;
+                
+                // Check for lowercase letters
+                if (/[a-z]/.test(password)) strength += 25;
+                
+                // Check for numbers and special characters
+                if (/[0-9]/.test(password)) strength += 12.5;
+                if (/[^A-Za-z0-9]/.test(password)) strength += 12.5;
+                
+                // Update strength bar
+                strengthBar.style.width = strength + '%';
+                
+                // Determine strength level
+                if (strength === 0) {
+                    text = 'None';
+                    color = '';
+                } else if (strength < 50) {
+                    text = 'Weak';
+                    color = 'strength-weak';
+                } else if (strength < 75) {
+                    text = 'Fair';
+                    color = 'strength-fair';
+                } else if (strength < 100) {
+                    text = 'Good';
+                    color = 'strength-good';
+                } else {
+                    text = 'Strong';
+                    color = 'strength-strong';
+                }
+                
+                // Update display
+                strengthBar.className = 'strength-bar ' + color;
+                strengthText.textContent = `Password strength: ${text}`;
+                
+                // Update requirements for rider
+                if (prefix === 'rider') {
+                    updatePasswordRequirements(password, prefix);
+                }
+            }
+            
+            // Update password requirements display
+            function updatePasswordRequirements(password, prefix) {
+                const requirements = {
+                    length: password.length >= 8,
+                    uppercase: /[A-Z]/.test(password),
+                    lowercase: /[a-z]/.test(password),
+                    number: /[0-9]/.test(password)
+                };
+                
+                Object.keys(requirements).forEach(key => {
+                    const element = document.getElementById(`${prefix}-req-${key}`);
+                    const icon = element.querySelector('i');
+                    if (requirements[key]) {
+                        element.classList.remove('invalid');
+                        element.classList.add('valid');
+                        icon.className = 'fas fa-check-circle';
+                        icon.style.color = '#34a853';
+                    } else {
+                        element.classList.remove('valid');
+                        element.classList.add('invalid');
+                        icon.className = 'fas fa-circle';
+                        icon.style.color = '#ea4335';
+                        icon.style.fontSize = '0.5rem';
+                    }
+                });
+            }
+            
+            // Helper functions
+            function showError(message) {
+                errorMessage.style.display = 'flex';
+                document.getElementById('error-text').innerHTML = message;
+                successMessage.style.display = 'none';
+                
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            }
+            
+            function showSuccess(message) {
+                successMessage.style.display = 'flex';
+                document.getElementById('success-text').textContent = message;
+                errorMessage.style.display = 'none';
+            }
+            
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+            
+            // Service areas management
+            window.addServiceArea = function() {
+                const input = document.getElementById('new-area');
+                const area = input.value.trim();
+                
+                if (area) {
+                    const areasDiv = document.getElementById('service-areas');
+                    const tag = document.createElement('div');
+                    tag.className = 'area-tag';
+                    tag.innerHTML = `
+                        <span>${area}</span>
+                        <i class="fas fa-times" onclick="this.parentElement.remove()"></i>
+                    `;
+                    areasDiv.appendChild(tag);
+                    input.value = '';
+                }
+            };
+            
+            function getServiceAreas() {
+                const areaTags = document.querySelectorAll('.area-tag span');
+                return Array.from(areaTags).map(span => span.textContent);
+            }
+            
+            // Vehicle photo upload simulation
+            window.uploadVehiclePhoto = function() {
+                alert('In a real application, this would open a file upload dialog. For demo purposes, photo upload is simulated.');
+            };
+            
+            // Check if user is already logged in
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
 </body>
 </html>
