@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driver Registration - TransitFinder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .driver-header {
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 700;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+        }
+        
+        .back-link a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.3s;
+        }
+        
+        .back-link a:hover {
+            opacity: 0.9;
+        }
+        
+        /* Driver Registration Page */
+        .driver-registration {
+            min-height: 100vh;
+            padding: 40px 0;
+            background: linear-gradient(135deg, rgba(26, 115, 232, 0.05) 0%, rgba(13, 71, 161, 0.05) 100%);
+        }
+        
+        .registration-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        /* Registration Steps */
+        .registration-steps {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 120px;
+            opacity: 0.5;
+            transition: all 0.3s;
+        }
+        
+        .step.active {
+            opacity: 1;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #666;
+            border: 3px solid transparent;
+        }
+        
+        .step.active .step-number {
+            background: #1a73e8;
+            color: white;
+            border-color: #0d47a1;
+        }
+        
+        .step.completed .step-number {
+            background: #34a853;
+            color: white;
+            border-color: #2e7d32;
+        }
+        
+        .step-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            color: #666;
+        }
+        
+        .step.active .step-label {
+            color: #1a73e8;
+            font-weight: 600;
+        }
+        
+        /* Registration Card */
+        .registration-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .card-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .card-header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .card-body {
+            padding: 40px;
+        }
+        
+        /* Form Styles */
+        .registration-form {
+            display: none;
+        }
+        
+        .registration-form.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+        }
+        
+        .form-section h3 {
+            font-size: 1.4rem;
+            color: #1a237e;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .form-group label.required::after {
+            content: ' *';
+            color: #ea4335;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+            font-size: 1.1rem;
+        }
+        
+        .input-with-icon input,
+        .input-with-icon select {
+            padding-left: 50px;
+        }
+        
+        /* Vehicle Information */
+        .vehicle-photo-upload {
+            border: 2px dashed #e0e0e0;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #f8f9fa;
+        }
+        
+        .vehicle-photo-upload:hover {
+            border-color: #1a73e8;
+            background: #e8f0fe;
+        }
+        
+        .vehicle-photo-upload i {
+            font-size: 3rem;
+            color: #1a73e8;
+            margin-bottom: 15px;
+        }
+        
+        .photo-preview {
+            display: none;
+            margin-top: 20px;
+            max-width: 300px;
+            margin: 20px auto 0;
+        }
+        
+        .photo-preview img {
+            width: 100%;
+            border-radius: 10px;
+        }
+        
+        /* Service Areas */
+        .service-areas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .area-tag {
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+        
+        .area-tag i {
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .add-area {
+            background: transparent;
+            border: 2px dashed #1a73e8;
+            color: #1a73e8;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        /* Availability Schedule */
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .day-schedule {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .day-schedule h4 {
+            margin-bottom: 10px;
+            color: #1a237e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .time-slots {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .time-slot {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        /* Document Upload */
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .document-upload {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .document-upload.uploaded {
+            border-color: #34a853;
+            background: #e6f4ea;
+        }
+        
+        .document-upload i {
+            font-size: 2.5rem;
+            color: #1a73e8;
+            margin-bottom: 15px;
+        }
+        
+        .document-upload.uploaded i {
+            color: #34a853;
+        }
+        
+        .upload-btn {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        
+        .upload-btn:hover {
+            background: #0d47a1;
+            transform: translateY(-2px);
+        }
+        
+        /* Terms and Conditions */
+        .terms-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            max-height: 200px;
+            overflow-y: auto;
+            border-left: 4px solid #1a73e8;
+        }
+        
+        .terms-box h4 {
+            color: #1a237e;
+            margin-bottom: 15px;
+        }
+        
+        .terms-box p {
+            margin-bottom: 10px;
+            color: #666;
+        }
+        
+        .terms-agreement {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        /* Navigation Buttons */
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .nav-btn {
+            padding: 14px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+        
+        .prev-btn {
+            background: white;
+            color: #666;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .prev-btn:hover {
+            border-color: #1a73e8;
+            color: #1a73e8;
+        }
+        
+        .next-btn,
+        .submit-btn {
+            background: linear-gradient(to right, #1a73e8, #0d47a1);
+            color: white;
+            border: none;
+        }
+        
+        .next-btn:hover,
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(26, 115, 232, 0.3);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(to right, #34a853, #2e7d32);
+        }
+        
+        .submit-btn:hover {
+            box-shadow: 0 7px 15px rgba(52, 168, 83, 0.3);
+        }
+        
+        /* Status Messages */
+        .status-message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .error-message {
+            background: #fce8e6;
+            color: #d93025;
+            border-left: 4px solid #ea4335;
+        }
+        
+        .success-message {
+            background: #e6f4ea;
+            color: #0d8a3c;
+            border-left: 4px solid #34a853;
+        }
+        
+        /* Earnings Calculator */
+        .earnings-calculator {
+            background: linear-gradient(135deg, #1a73e8, #0d47a1);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .earnings-calculator h3 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .calculator-inputs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .calculator-inputs input {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            width: 150px;
+            text-align: center;
+        }
+        
+        .earnings-result {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-top: 20px;
+        }
+        
+        /* Verification Badge */
+        .verification-badge {
+            background: #e6f4ea;
+            color: #0d8a3c;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 30px 0;
+            border: 2px solid #34a853;
+            display: none;
+        }
+        
+        .verification-badge i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .registration-steps {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            
+            .step {
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .card-body {
+                padding: 20px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .card-header {
+                padding: 20px;
+            }
+            
+            .card-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .schedule-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .documents-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="driver-header">
+        <div class="container header-content">
+            <div class="logo">
+                <a href="index.html">
+                    <i class="fas fa-route"></i>
+                    <span>TransitFinder</span>
+                </a>
+            </div>
+            <div class="back-link">
+                <a href="signup.html">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to Signup Options
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Driver Registration -->
+    <section class="driver-registration">
+        <div class="container registration-container">
+            <!-- Registration Steps -->
+            <div class="registration-steps">
+                <div class="step active" id="step1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Personal Info</div>
+                </div>
+                <div class="step" id="step2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Vehicle Details</div>
+                </div>
+                <div class="step" id="step3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Service Setup</div>
+                </div>
+                <div class="step" id="step4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Documents</div>
+                </div>
+                <div class="step" id="step5">
+                    <div class="step-number">5</div>
+                    <div class="step-label">Review</div>
+                </div>
+            </div>
+
+            <!-- Registration Card -->
+            <div class="registration-card">
+                <div class="card-header">
+                    <h1><i class="fas fa-id-card"></i> Driver Registration</h1>
+                    <p>Complete your profile to start earning with TransitFinder</p>
+                </div>
+
+                <div class="card-body">
+                    <!-- Status Messages -->
+                    <div class="error-message" id="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span id="error-text"></span>
+                    </div>
+
+                    <div class="success-message" id="success-message">
+                        <i class="fas fa-check-circle"></i>
+                        <span id="success-text"></span>
+                    </div>
+
+                    <!-- Step 1: Personal Information -->
+                    <form class="registration-form active" id="step1-form">
+                        <div class="form-section">
+                            <h3><i class="fas fa-user"></i> Personal Information</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="driver-first-name" class="required">First Name</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-user"></i>
+                                        <input type="text" id="driver-first-name" class="form-control" placeholder="John" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="driver-last-name" class="required">Last Name</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-user"></i>
+                                        <input type="text" id="driver-last-name" class="form-control" placeholder="Doe" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3><i class="fas fa-address-card"></i> Contact Information</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="driver-email" class="required">Email Address</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-envelope"></i>
+                                        <input type="email" id="driver-email" class="form-control" placeholder="john.doe@example.com" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="driver-phone" class="required">Phone Number</label>
+                                    <div class="input-with-icon">
+                                        <i class="fas fa-phone"></i>
+                                        <input type="tel" id="driver-phone" class="form-control" placeholder="+1 (555) 123-4567" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3><i class="fas fa-map-marker-alt"></i> Address</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="driver-address" class="required">Street Address</label>
+                                    <input type="text" id="driver-address" class="form-control" placeholder="123 Main Street" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="driver-city" class="required">City</label>
+                                    <input type="text" id="driver-city" class="form-control" placeholder="New York" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="driver-zip" class="required">ZIP Code</label>
+                                    <input type="text" id="driver-zip" class="form-control" placeholder="10001" required>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Step 2: Vehicle Information -->
+                    <form class="registration-form" id="step2-form">
+                        <div class="form-section">
+                            <h3><i class="fas fa-car"></i> Vehicle Information</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="vehicle-make" class="required">Make</label>
+                                    <input type="text" id="vehicle-make" class="form-control" placeholder="Toyota" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehicle-model" class="required">Model</label>
+                                    <input type="text" id="vehicle-model" class="form-control" placeholder="Camry" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehicle-year" class="required">Year</label>
+                                    <input type="number" id="vehicle-year" class="form-control" placeholder="2022" min="2000" max="2024" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehicle-color" class="required">Color</label>
+                                    <input type="text" id="vehicle-color" class="form-control" placeholder="Blue" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehicle-plate" class="required">License Plate</label>
+                                    <input type="text" id="vehicle-plate" class="form-control" placeholder="ABC123" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vehicle-seats" class="required">Passenger Seats</label>
+                                    <select id="vehicle-seats" class="form-control" required>
+                                        <option value="">Select seats</option>
+                                        <option value="2">2 seats</option>
+                                        <option value="4">4 seats</option>
+                                        <option value="6">6 seats</option>
+                                        <option value="8">8+ seats</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3><i class="fas fa-camera"></i> Vehicle Photos</h3>
+                            <p>Upload clear photos of your vehicle from multiple angles</p>
+                            <div class="vehicle-photo-upload" id="vehicle-photo-upload">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <h4>Upload Vehicle Photos</h4>
+                                <p>Click or drag photos here (Max 5 photos, 5MB each)</p>
+                                <p>Supported: JPG, PNG</p>
+                            </div>
+                            <div class="photo-preview" id="photo-preview"></div>
+                        </div>
+
+                        <!-- Earnings Calculator -->
+                        <div class="earnings-calculator">
+                            <h3><i class="fas fa-calculator"></i> Potential Earnings Calculator</h3>
+                            <p>Estimate how much you could earn per week</p>
+                            <div class="calculator-inputs">
+                                <div>
+                                    <label>Hours per day</label>
+                                    <input type="number" id="hours-per-day" value="8" min="1" max="24">
+                                </div>
+                                <div>
+                                    <label>Days per week</label>
+                                    <input type="number" id="days-per-week" value="5" min="1" max="7">
+                                </div>
+                                <div>
+                                    <label>Avg. fare ($)</label>
+                                    <input type="number" id="avg-fare" value="15" min="5" max="100">
+                                </div>
+                            </div>
+                            <div class="earnings-result" id="earnings-result">
+                                $0/week
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Step 3: Service Setup -->
+                    <form class="registration-form" id="step3-form">
+                        <div class="form-section">
+                            <h3><i class="fas fa-briefcase"></i> Service Type</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Choose Your Services</label>
+                                    <div style="margin-top: 10px;">
+                                        <label style="display: block; margin-bottom: 10px;">
+                                            <input type="checkbox" name="service-type" value="taxi" checked> 
+                                            <i class="fas fa-taxi"></i> Taxi Service
+                                        </label>
+                                        <label style="display: block; margin-bottom: 10px;">
+                                            <input type="checkbox" name="service-type" value="cab">
+                                            <i class="fas fa-car"></i> Cab Service
+                                        </label>
+                                        <label style="display: block; margin-bottom: 10px;">
+                                            <input type="checkbox" name="service-type" value="bus">
+                                            <i class="fas fa-bus"></i> Shuttle Service
+                                        </label>
+                                        <label style="display: block;">
+                                            <input type="checkbox" name="service-type" value="delivery">
+                                            <i class="fas fa-shipping-fast"></i> Package Delivery
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="base-fare" class="required">Base Fare ($)</label>
+                                    <input type="number" id="base-fare" class="form-control" placeholder="3.50" step="0.01" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="per-mile-rate" class="required">Rate per Mile ($)</label>
+                                    <input type="number" id="per-mile-rate" class="form-control" placeholder="2.50" step="0.01" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3><i class="fas fa-map-marked-alt"></i> Service Areas</h3>
+                            <p>Add areas where you want to provide service</p>
+                            <div class="service-areas" id="service-areas">
+                                <!-- Areas will be added here -->
+                            </div>
+                            <div style="margin-top: 15px;">
+                                <input type="text" id="new-area" class="form-control" placeholder="Enter area (e.g., Manhattan, Brooklyn)" style="width: 300px; display: inline-block;">
+                                <button type="button" class="add-area" onclick="addServiceArea()">
+                                    <i class="fas fa-plus"></i> Add Area
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3><i class="fas fa-calendar-alt"></i> Availability Schedule</h3>
+                            <div class="schedule-grid">
+                                <div class="day-schedule">
+                                    <h4><i class="fas fa-sun"></i> Weekdays</h4>
+                                    <div class="time-slots">
+                                        <div class="time-slot">
+                                            <input type="checkbox" id="weekday-morning" checked>
+                                            <label for="weekday-morning">Morning (6AM-12PM)</label>
+                                        </div>
+                                        <div class="time-slot">
+                                            <input type="checkbox" id="weekday-afternoon" checked>
+                                            <label for="weekday-afternoon">Afternoon (12PM-6PM)</label>
+                                        </div>
+                                        <div class="time-slot">
+                                            <input type="checkbox" id="weekday-evening">
+                                            <label for="weekday-evening">Evening (6PM-12AM)</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="day-schedule">
+                                    <h4><i class="fas fa-moon"></i> Weekends</h4>
+                                    <div class="time-slots">
+                                        <div class="time-slot">
+                                            <input type="checkbox" id="weekend-morning">
+                                            <label for="weekend-morning">Morning (6AM-12PM)</label>
+                                        </div>
+                                        <div class="time-slot">
+                                            <input type="checkbox" id="weekend-afternoon" checked>
+                                            <label for="weekend-afternoon">Afternoon (12PM-6PM)</label>
+                                        </div>
+                                        <div class="time-slot">
+                                            <input type="checkbox" id="weekend-evening" checked>
+                                            <label for="weekend-evening">Evening (6PM-12AM)</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Step 4: Documents -->
+                    <form class="registration-form" id="step4-form">
+                        <div class="form-section">
+                            <h3><i class="fas fa-file-contract"></i> Required Documents</h3>
+                            <p>Upload clear photos/scans of the following documents</p>
+                            <div class="documents-grid">
+                                <div class="document-upload" id="license-upload">
+                                    <i class="fas fa-id-card"></i>
+                                    <h4>Driver's License</h4>
+                                    <p>Front and back of your valid driver's license</p>
+                                    <button type="button" class="upload-btn" onclick="uploadDocument('license')">
+                                        <i class="fas fa-upload"></i> Upload
+                                    </button>
+                                </div>
+                                <div class="document-upload" id="registration-upload">
+                                    <i class="fas fa-file-alt"></i>
+                                    <h4>Vehicle Registration</h4>
+                                    <p>Current vehicle registration certificate</p>
+                                    <button type="button" class="upload-btn" onclick="uploadDocument('registration')">
+                                        <i class="fas fa-upload"></i> Upload
+                                    </button>
+                                </div>
+                                <div class="document-upload" id="insurance-upload">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <h4>Insurance Proof</h4>
+                                    <p>Valid insurance certificate with rideshare coverage</p>
+                                    <button type="button" class="upload-btn" onclick="uploadDocument('insurance')">
+                                        <i class="fas fa-upload"></i> Upload
+                                    </button>
+                                </div>
+                                <div class="document-upload" id="background-check">
+                                    <i class="fas fa-user-shield"></i>
+                                    <h4>Background Check</h4>
+                                    <p>We'll initiate this automatically after submission</p>
+                                    <button type="button" class="upload-btn" disabled>
+                                        <i class="fas fa-hourglass-half"></i> Pending
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="verification-badge" id="verification-badge">
+                            <i class="fas fa-badge-check"></i>
+                            <h3>Verification in Progress</h3>
+                            <p>Your documents have been submitted for verification.</p>
+                            <p>You'll receive an email within 2-3 business days.</p>
+                        </div>
+                    </form>
+
+                    <!-- Step 5: Review and Submit -->
+                    <form class="registration-form" id="step5-form">
+                        <div class="form-section">
+                            <h3><i class="fas fa-clipboard-check"></i> Review Your Information</h3>
+                            <div id="review-summary">
+                                <!-- Summary will be generated here -->
+                            </div>
+                        </div>
+
+                        <div class="terms-box">
+                            <h4><i class="fas fa-file-signature"></i> Terms & Conditions</h4>
+                            <p><strong>Driver Agreement:</strong> By submitting this application, you agree to:</p>
+                            <p>1. Maintain valid driver's license, registration, and insurance</p>
+                            <p>2. Pass a background check</p>
+                            <p>3. Maintain a 4.5+ star rating</p>
+                            <p>4. Follow all traffic laws and regulations</p>
+                            <p>5. TransitFinder's commission structure of 15% per ride</p>
+                            <p>6. Weekly payment processing via direct deposit</p>
+                        </div>
+
+                        <div class="terms-agreement">
+                            <input type="checkbox" id="driver-terms" required>
+                            <label for="driver-terms">
+                                I have read and agree to the Terms & Conditions, Privacy Policy, and Driver Agreement.
+                            </label>
+                        </div>
+                    </form>
+
+                    <!-- Navigation Buttons -->
+                    <div class="form-navigation">
+                        <button class="nav-btn prev-btn" id="prev-btn" style="display: none;">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </button>
+                        <button class="nav-btn next-btn" id="next-btn">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <button class="nav-btn submit-btn" id="submit-btn" style="display: none;">
+                            <i class="fas fa-paper-plane"></i> Submit Application
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Driver Registration Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const steps = document.querySelectorAll('.step');
+            const forms = document.querySelectorAll('.registration-form');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+            let currentStep = 1;
+            
+            // Initialize earnings calculator
+            initEarningsCalculator();
+            
+            // Navigation
+            nextBtn.addEventListener('click', nextStep);
+            prevBtn.addEventListener('click', prevStep);
+            submitBtn.addEventListener('click', submitApplication);
+            
+            // Step navigation
+            function nextStep() {
+                if (!validateCurrentStep()) return;
+                
+                if (currentStep < 5) {
+                    // Move to next step
+                    steps[currentStep - 1].classList.remove('active');
+                    steps[currentStep - 1].classList.add('completed');
+                    
+                    forms[currentStep - 1].classList.remove('active');
+                    
+                    currentStep++;
+                    
+                    steps[currentStep - 1].classList.add('active');
+                    forms[currentStep - 1].classList.add('active');
+                    
+                    updateNavigation();
+                    
+                    // Generate review summary on step 5
+                    if (currentStep === 5) {
+                        generateReviewSummary();
+                    }
+                }
+            }
+            
+            function prevStep() {
+                if (currentStep > 1) {
+                    // Move to previous step
+                    steps[currentStep - 1].classList.remove('active');
+                    forms[currentStep - 1].classList.remove('active');
+                    
+                    currentStep--;
+                    
+                    steps[currentStep - 1].classList.add('active');
+                    forms[currentStep - 1].classList.add('active');
+                    
+                    updateNavigation();
+                }
+            }
+            
+            function updateNavigation() {
+                // Update button visibility
+                prevBtn.style.display = currentStep > 1 ? 'flex' : 'none';
+                nextBtn.style.display = currentStep < 5 ? 'flex' : 'none';
+                submitBtn.style.display = currentStep === 5 ? 'flex' : 'none';
+                
+                // Update button text for last step
+                if (currentStep === 4) {
+                    nextBtn.innerHTML = 'Review & Submit <i class="fas fa-arrow-right"></i>';
+                } else {
+                    nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right"></i>';
+                }
+            }
+            
+            // Step validation
+            function validateCurrentStep() {
+                let isValid = true;
+                const currentForm = forms[currentStep - 1];
+                const inputs = currentForm.querySelectorAll('input[required], select[required]');
+                
+                // Clear previous errors
+                errorMessage.style.display = 'none';
+                
+                // Check required fields
+                inputs.forEach(input => {
+                    if (!input.value.trim()) {
+                        isValid = false;
+                        input.style.borderColor = '#ea4335';
+                        input.focus();
+                    } else {
+                        input.style.borderColor = '';
+                    }
+                });
+                
+                // Step-specific validation
+                switch(currentStep) {
+                    case 1:
+                        // Email validation
+                        const email = document.getElementById('driver-email').value;
+                        if (email && !isValidEmail(email)) {
+                            showError('Please enter a valid email address');
+                            isValid = false;
+                        }
+                        break;
+                    case 2:
+                        // Vehicle year validation
+                        const year = document.getElementById('vehicle-year').value;
+                        if (year && (year < 2000 || year > 2024)) {
+                            showError('Please enter a valid vehicle year (2000-2024)');
+                            isValid = false;
+                        }
+                        break;
+                }
+                
+                if (!isValid) {
+                    showError('Please fill in all required fields correctly');
+                }
+                
+                return isValid;
+            }
+            
+            // Submit application
+            function submitApplication() {
+                if (!validateCurrentStep()) return;
+                
+                if (!document.getElementById('driver-terms').checked) {
+                    showError('You must agree to the Terms & Conditions');
+                    return;
+                }
+                
+                // Show loading state
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                submitBtn.disabled = true;
+                
+                // Simulate API call
+                setTimeout(() => {
+                    // Show success message
+                    successMessage.style.display = 'flex';
+                    document.getElementById('success-text').textContent = 'Application submitted successfully! You will receive a verification email within 24 hours.';
+                    
+                    // Show verification badge
+                    document.getElementById('verification-badge').style.display = 'block';
+                    
+                    // Store driver data
+                    const driverData = collectDriverData();
+                    localStorage.setItem('driverData', JSON.stringify(driverData));
+                    localStorage.setItem('driverApplicationSubmitted', 'true');
+                    
+                    // Redirect after delay
+                    setTimeout(() => {
+                        window.location.href = 'driver-dashboard.html';
+                    }, 3000);
+                }, 2000);
+            }
+            
+            // Collect all driver data
+            function collectDriverData() {
+                return {
+                    personal: {
+                        firstName: document.getElementById('driver-first-name').value,
+                        lastName: document.getElementById('driver-last-name').value,
+                        email: document.getElementById('driver-email').value,
+                        phone: document.getElementById('driver-phone').value,
+                        address: document.getElementById('driver-address').value,
+                        city: document.getElementById('driver-city').value,
+                        zip: document.getElementById('driver-zip').value
+                    },
+                    vehicle: {
+                        make: document.getElementById('vehicle-make').value,
+                        model: document.getElementById('vehicle-model').value,
+                        year: document.getElementById('vehicle-year').value,
+                        color: document.getElementById('vehicle-color').value,
+                        plate: document.getElementById('vehicle-plate').value,
+                        seats: document.getElementById('vehicle-seats').value
+                    },
+                    service: {
+                        baseFare: document.getElementById('base-fare').value,
+                        perMileRate: document.getElementById('per-mile-rate').value,
+                        serviceTypes: Array.from(document.querySelectorAll('input[name="service-type"]:checked'))
+                            .map(cb => cb.value),
+                        serviceAreas: Array.from(document.querySelectorAll('.area-tag span'))
+                            .map(span => span.textContent),
+                        submittedAt: new Date().toISOString()
+                    }
+                };
+            }
+            
+            // Generate review summary
+            function generateReviewSummary() {
+                const data = collectDriverData();
+                const summaryDiv = document.getElementById('review-summary');
+                
+                summaryDiv.innerHTML = `
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <h4 style="color: #1a237e; margin-bottom: 15px;"><i class="fas fa-user"></i> Personal Information</h4>
+                        <p><strong>Name:</strong> ${data.personal.firstName} ${data.personal.lastName}</p>
+                        <p><strong>Email:</strong> ${data.personal.email}</p>
+                        <p><strong>Phone:</strong> ${data.personal.phone}</p>
+                        <p><strong>Address:</strong> ${data.personal.address}, ${data.personal.city} ${data.personal.zip}</p>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <h4 style="color: #1a237e; margin-bottom: 15px;"><i class="fas fa-car"></i> Vehicle Information</h4>
+                        <p><strong>Vehicle:</strong> ${data.vehicle.year} ${data.vehicle.make} ${data.vehicle.model}</p>
+                        <p><strong>Color:</strong> ${data.vehicle.color}</p>
+                        <p><strong>License Plate:</strong> ${data.vehicle.plate}</p>
+                        <p><strong>Seats:</strong> ${data.vehicle.seats} passenger seats</p>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <h4 style="color: #1a237e; margin-bottom: 15px;"><i class="fas fa-briefcase"></i> Service Information</h4>
+                        <p><strong>Service Types:</strong> ${data.service.serviceTypes.join(', ')}</p>
+                        <p><strong>Base Fare:</strong> $${data.service.baseFare}</p>
+                        <p><strong>Rate per Mile:</strong> $${data.service.perMileRate}</p>
+                        <p><strong>Service Areas:</strong> ${data.service.serviceAreas.join(', ') || 'None specified'}</p>
+                    </div>
+                `;
+            }
+            
+            // Helper functions
+            function showError(message) {
+                errorMessage.style.display = 'flex';
+                document.getElementById('error-text').textContent = message;
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            }
+            
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+            
+            // Vehicle photo upload simulation
+            document.getElementById('vehicle-photo-upload').addEventListener('click', function() {
+                // In a real app, this would open a file picker
+                const preview = document.getElementById('photo-preview');
+                preview.innerHTML = `
+                    <div style="display: flex; gap: 10px; margin-top: 20px;">
+                        <div style="background: #e8f0fe; padding: 20px; border-radius: 8px; text-align: center; flex: 1;">
+                            <i class="fas fa-car-side" style="font-size: 2rem; color: #1a73e8;"></i>
+                            <p style="margin-top: 10px;">Front View</p>
+                        </div>
+                        <div style="background: #e8f0fe; padding: 20px; border-radius: 8px; text-align: center; flex: 1;">
+                            <i class="fas fa-car-side" style="font-size: 2rem; color: #1a73e8;"></i>
+                            <p style="margin-top: 10px;">Side View</p>
+                        </div>
+                        <div style="background: #e8f0fe; padding: 20px; border-radius: 8px; text-align: center; flex: 1;">
+                            <i class="fas fa-car-side" style="font-size: 2rem; color: #1a73e8;"></i>
+                            <p style="margin-top: 10px;">Back View</p>
+                        </div>
+                    </div>
+                    <p style="text-align: center; margin-top: 10px; color: #666;">Photos uploaded successfully</p>
+                `;
+                preview.style.display = 'block';
+            });
+            
+            // Document upload simulation
+            window.uploadDocument = function(type) {
+                const uploadDiv = document.getElementById(`${type}-upload`);
+                uploadDiv.classList.add('uploaded');
+                uploadDiv.querySelector('i').className = 'fas fa-check-circle';
+                uploadDiv.querySelector('.upload-btn').innerHTML = '<i class="fas fa-check"></i> Uploaded';
+                uploadDiv.querySelector('.upload-btn').disabled = true;
+                uploadDiv.querySelector('.upload-btn').style.background = '#34a853';
+                
+                showSuccess(`${type.charAt(0).toUpperCase() + type.slice(1)} uploaded successfully`);
+            };
+            
+            // Service areas management
+            window.addServiceArea = function() {
+                const input = document.getElementById('new-area');
+                const area = input.value.trim();
+                
+                if (area) {
+                    const areasDiv = document.getElementById('service-areas');
+                    const tag = document.createElement('div');
+                    tag.className = 'area-tag';
+                    tag.innerHTML = `
+                        <span>${area}</span>
+                        <i class="fas fa-times" onclick="removeArea(this)"></i>
+                    `;
+                    areasDiv.appendChild(tag);
+                    input.value = '';
+                }
+            };
+            
+            window.removeArea = function(element) {
+                element.parentElement.remove();
+            };
+            
+            // Initialize earnings calculator
+            function initEarningsCalculator() {
+                const inputs = ['hours-per-day', 'days-per-week', 'avg-fare'];
+                
+                inputs.forEach(id => {
+                    document.getElementById(id).addEventListener('input', calculateEarnings);
+                });
+                
+                calculateEarnings(); // Initial calculation
+            }
+            
+            function calculateEarnings() {
+                const hours = parseFloat(document.getElementById('hours-per-day').value) || 0;
+                const days = parseFloat(document.getElementById('days-per-week').value) || 0;
+                const fare = parseFloat(document.getElementById('avg-fare').value) || 0;
+                
+                // Assuming 2 rides per hour average
+                const weeklyEarnings = hours * days * fare * 2;
+                document.getElementById('earnings-result').textContent = `$${weeklyEarnings.toFixed(2)}/week`;
+            }
+            
+            // Check if coming from signup page
+            if (localStorage.getItem('comingFromSignup') === 'true') {
+                // Pre-fill email if available
+                const storedEmail = localStorage.getItem('signupEmail');
+                if (storedEmail) {
+                    document.getElementById('driver-email').value = storedEmail;
+                }
+                
+                // Clear the flag
+                localStorage.removeItem('comingFromSignup');
+                localStorage.removeItem('signupEmail');
+            }
+        });
+    </script>
+</body>
+</html>
