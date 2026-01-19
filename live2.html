@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Location Tracker with Google Maps</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a237e 0%, #4a148c 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            color: #1a237e;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: #4a148c;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        @media (min-width: 992px) {
+            .main-content {
+                flex-direction: row;
+            }
+        }
+        
+        .map-container {
+            flex: 3;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            min-height: 500px;
+            position: relative;
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+        }
+        
+        .info-panel {
+            flex: 1;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            color: #1a237e;
+        }
+        
+        .info-header i {
+            font-size: 1.8rem;
+            margin-right: 15px;
+        }
+        
+        .info-header h2 {
+            font-size: 1.8rem;
+        }
+        
+        .location-info {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            flex-grow: 1;
+        }
+        
+        .info-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .info-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #1a237e;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .info-text h3 {
+            color: #1a237e;
+            margin-bottom: 5px;
+            font-size: 1rem;
+        }
+        
+        .info-text p {
+            color: #333;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        button i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        #locateBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        #locateBtn:hover {
+            background-color: #388E3C;
+            transform: translateY(-3px);
+        }
+        
+        #refreshBtn {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        #refreshBtn:hover {
+            background-color: #1976D2;
+            transform: translateY(-3px);
+        }
+        
+        #shareBtn {
+            background-color: #9C27B0;
+            color: white;
+        }
+        
+        #shareBtn:hover {
+            background-color: #7B1FA2;
+            transform: translateY(-3px);
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+        
+        .status.success {
+            background-color: #E8F5E9;
+            color: #2E7D32;
+            display: block;
+        }
+        
+        .status.error {
+            background-color: #FFEBEE;
+            color: #C62828;
+            display: block;
+        }
+        
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            border-radius: 15px;
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #1a237e;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: white;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .accuracy-indicator {
+            height: 10px;
+            background: linear-gradient(to right, #f44336, #FF9800, #8BC34A, #4CAF50);
+            border-radius: 5px;
+            margin-top: 5px;
+            position: relative;
+        }
+        
+        .accuracy-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #1a237e;
+            border-radius: 50%;
+            top: -5px;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-map-marker-alt"></i> Live Location Tracker</h1>
+            <p class="subtitle">See your real-time location on Google Maps with detailed location information</p>
+            <p>Your location is never stored or shared without your permission</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <h3>Loading map and your location...</h3>
+                    <p>Please allow location access when prompted</p>
+                </div>
+            </div>
+            
+            <div class="info-panel">
+                <div class="info-header">
+                    <i class="fas fa-info-circle"></i>
+                    <h2>Location Details</h2>
+                </div>
+                
+                <div class="location-info">
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-crosshairs"></i>
+                        </div>
+                        <div class="info-text">
+                            <h3>Coordinates</h3>
+                            <p id="coordinates">Waiting for location...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-map-pin"></i>
+                        </div>
+                        <div class="info-text">
+                            <h3>Address</h3>
+                            <p id="address">Searching for address...</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <div class="info-text">
+                            <h3>Accuracy</h3>
+                            <p id="accuracy">Calculating...</p>
+                            <div class="accuracy-indicator">
+                                <div class="accuracy-marker" id="accuracyMarker"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="info-text">
+                            <h3>Last Updated</h3>
+                            <p id="timestamp">--:--:--</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <button id="locateBtn">
+                        <i class="fas fa-location-arrow"></i> Locate Me
+                    </button>
+                    <button id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i> Refresh Location
+                    </button>
+                    <button id="shareBtn">
+                        <i class="fas fa-share-alt"></i> Share Location
+                    </button>
+                </div>
+                
+                <div class="status" id="statusMessage"></div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Live Location Tracker &copy; 2023 | Uses Google Maps API | Your privacy is protected</p>
+        </div>
+    </div>
+
+    <!-- Load Google Maps API -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5Z29K9C9E8JpIbvK1Vc4-cdQ1R8RdQ6s&callback=initMap"></script>
+    
+    <script>
+        // Global variables
+        let map;
+        let marker;
+        let geocoder;
+        let watchId = null;
+        let currentPosition = null;
+        
+        // Initialize the map
+        function initMap() {
+            // Default center (New York) in case geolocation fails
+            const defaultCenter = { lat: 40.7128, lng: -74.0060 };
+            
+            // Create the map
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: defaultCenter,
+                mapTypeId: 'roadmap',
+                styles: [
+                    {
+                        "featureType": "poi",
+                        "stylers": [{ "visibility": "off" }]
+                    }
+                ]
+            });
+            
+            // Initialize geocoder
+            geocoder = new google.maps.Geocoder();
+            
+            // Create initial marker
+            marker = new google.maps.Marker({
+                position: defaultCenter,
+                map: map,
+                title: 'Your location',
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 10,
+                    fillColor: '#1a237e',
+                    fillOpacity: 1,
+                    strokeColor: '#FFFFFF',
+                    strokeWeight: 2,
+                },
+                animation: google.maps.Animation.DROP
+            });
+            
+            // Try to get the user's current location
+            locateUser();
+            
+            // Hide loading screen after map loads
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+            }, 1000);
+        }
+        
+        // Get user's current location
+        function locateUser() {
+            if (navigator.geolocation) {
+                showStatus("Getting your location...", "info");
+                
+                // Get current position
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        updateLocation(position);
+                        showStatus("Location found successfully!", "success");
+                    },
+                    (error) => {
+                        handleLocationError(error);
+                        showStatus("Could not get your location. Using default location.", "error");
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+                
+                // Watch for position changes
+                if (watchId) {
+                    navigator.geolocation.clearWatch(watchId);
+                }
+                
+                watchId = navigator.geolocation.watchPosition(
+                    (position) => updateLocation(position),
+                    (error) => console.error('Error watching position:', error),
+                    {
+                        enableHighAccuracy: true,
+                        maximumAge: 10000
+                    }
+                );
+            } else {
+                // Browser doesn't support geolocation
+                showStatus("Geolocation is not supported by your browser.", "error");
+            }
+        }
+        
+        // Update location on the map
+        function updateLocation(position) {
+            currentPosition = position;
+            
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            const accuracy = position.coords.accuracy;
+            
+            // Update coordinates display
+            document.getElementById('coordinates').textContent = 
+                `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            
+            // Update accuracy display
+            document.getElementById('accuracy').textContent = 
+                `${Math.round(accuracy)} meters`;
+            
+            // Update accuracy marker position
+            updateAccuracyIndicator(accuracy);
+            
+            // Update timestamp
+            const now = new Date();
+            document.getElementById('timestamp').textContent = 
+                `${now.toLocaleTimeString()}`;
+            
+            // Create new position object
+            const newPos = { lat, lng };
+            
+            // Move map center and marker
+            map.setCenter(newPos);
+            marker.setPosition(newPos);
+            
+            // Adjust zoom based on accuracy
+            const zoomLevel = accuracy < 100 ? 16 : accuracy < 500 ? 14 : 12;
+            map.setZoom(zoomLevel);
+            
+            // Add a circle to show accuracy area
+            if (window.accuracyCircle) {
+                window.accuracyCircle.setMap(null);
+            }
+            
+            window.accuracyCircle = new google.maps.Circle({
+                strokeColor: '#1a237e',
+                strokeOpacity: 0.3,
+                strokeWeight: 1,
+                fillColor: '#1a237e',
+                fillOpacity: 0.1,
+                map: map,
+                center: newPos,
+                radius: accuracy
+            });
+            
+            // Reverse geocode to get address
+            reverseGeocode(newPos);
+        }
+        
+        // Update accuracy indicator visualization
+        function updateAccuracyIndicator(accuracy) {
+            const marker = document.getElementById('accuracyMarker');
+            // Accuracy can range from 0 (best) to 5000+ meters (worst)
+            // We'll cap at 500 for visualization purposes
+            const cappedAccuracy = Math.min(accuracy, 500);
+            const percentage = (cappedAccuracy / 500) * 100;
+            
+            // Position the marker (0% = left, 100% = right)
+            // But we want better accuracy (smaller number) to be on the left
+            const position = 100 - percentage;
+            marker.style.left = `${position}%`;
+            
+            // Change color based on accuracy
+            if (accuracy < 50) {
+                marker.style.backgroundColor = '#4CAF50'; // Green for high accuracy
+            } else if (accuracy < 200) {
+                marker.style.backgroundColor = '#FF9800'; // Orange for medium accuracy
+            } else {
+                marker.style.backgroundColor = '#f44336'; // Red for low accuracy
+            }
+        }
+        
+        // Reverse geocode coordinates to get address
+        function reverseGeocode(latLng) {
+            geocoder.geocode({ location: latLng }, (results, status) => {
+                if (status === 'OK' && results[0]) {
+                    document.getElementById('address').textContent = 
+                        results[0].formatted_address;
+                } else {
+                    document.getElementById('address').textContent = 
+                        'Address not found';
+                }
+            });
+        }
+        
+        // Handle location errors
+        function handleLocationError(error) {
+            let errorMessage;
+            
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMessage = "Location access was denied. Please allow location access to use this feature.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMessage = "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    errorMessage = "The request to get your location timed out.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    errorMessage = "An unknown error occurred.";
+                    break;
+            }
+            
+            showStatus(errorMessage, "error");
+        }
+        
+        // Show status messages
+        function showStatus(message, type) {
+            const statusElement = document.getElementById('statusMessage');
+            statusElement.textContent = message;
+            statusElement.className = 'status ' + type;
+            
+            // Auto-hide success messages after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusElement.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        // Share location functionality
+        function shareLocation() {
+            if (!currentPosition) {
+                showStatus("No location data available to share.", "error");
+                return;
+            }
+            
+            const lat = currentPosition.coords.latitude;
+            const lng = currentPosition.coords.longitude;
+            const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+            
+            // Check if Web Share API is available
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Current Location',
+                    text: `I'm at ${lat.toFixed(6)}, ${lng.toFixed(6)}`,
+                    url: googleMapsUrl,
+                })
+                .then(() => showStatus("Location shared successfully!", "success"))
+                .catch((error) => {
+                    if (error.name !== 'AbortError') {
+                        showStatus("Could not share location.", "error");
+                    }
+                });
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(`My location: ${googleMapsUrl}`)
+                    .then(() => showStatus("Location link copied to clipboard!", "success"))
+                    .catch(() => showStatus("Failed to copy location to clipboard.", "error"));
+            }
+        }
+        
+        // Set up button event listeners when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            // Locate button
+            document.getElementById('locateBtn').addEventListener('click', locateUser);
+            
+            // Refresh button
+            document.getElementById('refreshBtn').addEventListener('click', () => {
+                showStatus("Refreshing location...", "info");
+                locateUser();
+            });
+            
+            // Share button
+            document.getElementById('shareBtn').addEventListener('click', shareLocation);
+            
+            // Show initial loading message
+            showStatus("Loading Google Maps and requesting location...", "info");
+        });
+        
+        // Handle Google Maps API loading error
+        window.gm_authFailure = function() {
+            showStatus("Google Maps failed to load. Please check your internet connection.", "error");
+            document.getElementById('loading').innerHTML = `
+                <h3>Google Maps Error</h3>
+                <p>There was a problem loading Google Maps. Please check your internet connection and try again.</p>
+            `;
+        };
+    </script>
+</body>
+</html>
