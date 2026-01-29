@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransitGo | Available Vehicles</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #6c63ff 0%, #4a44c6 100%);
+            color: white;
+            padding: 25px 40px;
+            box-shadow: 0 4px 20px rgba(108, 99, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-menu a {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .user-menu a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 50px;
+        }
+
+        .user-profile img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* Sidebar Filters */
+        .sidebar {
+            width: 280px;
+            flex-shrink: 0;
+        }
+
+        .filter-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .filter-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4a44c6;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-group {
+            margin-bottom: 25px;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #444;
+            font-size: 14px;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .filter-option:hover {
+            background: #f5f7fa;
+        }
+
+        .filter-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #6c63ff;
+        }
+
+        .filter-option span {
+            flex: 1;
+        }
+
+        .vehicle-count {
+            background: #6c63ff;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .price-range {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .price-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .price-input:focus {
+            outline: none;
+            border-color: #6c63ff;
+        }
+
+        .apply-filters {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #6c63ff 0%, #4a44c6 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .apply-filters:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .page-subtitle {
+            color: #666;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+
+        .sort-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .sort-select {
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            font-size: 14px;
+            color: #444;
+            min-width: 200px;
+            cursor: pointer;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 5px;
+            background: white;
+            padding: 5px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .view-btn {
+            padding: 10px 15px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .view-btn.active {
+            background: #6c63ff;
+            color: white;
+        }
+
+        /* Vehicles Grid */
+        .vehicles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .vehicle-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .vehicle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .vehicle-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .vehicle-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #4a44c6;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .vehicle-content {
+            padding: 20px;
+        }
+
+        .vehicle-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .vehicle-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .vehicle-subtitle {
+            color: #666;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .vehicle-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #fff8e1;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ff9800;
+        }
+
+        .vehicle-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .detail-item i {
+            color: #6c63ff;
+            width: 20px;
+        }
+
+        .vehicle-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .vehicle-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4a44c6;
+        }
+
+        .vehicle-price span {
+            font-size: 14px;
+            font-weight: normal;
+            color: #666;
+        }
+
+        .book-btn {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #6c63ff 0%, #4a44c6 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .book-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.3);
+        }
+
+        .book-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Map View */
+        .map-container {
+            height: 600px;
+            background: #f0f0f0;
+            border-radius: 16px;
+            overflow: hidden;
+            display: none;
+            position: relative;
+        }
+
+        .map-view.active {
+            display: block;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #666;
+        }
+
+        .map-placeholder i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            color: #6c63ff;
+            opacity: 0.5;
+        }
+
+        /* No Results */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .no-results i {
+            font-size: 64px;
+            color: #6c63ff;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        .no-results h3 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .no-results p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+
+        .pagination-btn {
+            padding: 10px 18px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pagination-btn:hover {
+            border-color: #6c63ff;
+            color: #6c63ff;
+        }
+
+        .pagination-btn.active {
+            background: #6c63ff;
+            color: white;
+            border-color: #6c63ff;
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .filter-card {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+            }
+            
+            .filter-group {
+                margin-bottom: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .sort-controls {
+                width: 100%;
+            }
+            
+            .sort-select {
+                flex: 1;
+            }
+            
+            .vehicles-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 20px;
+            }
+            
+            .user-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .vehicle-footer {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            
+            .book-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <span>TransitGo</span>
+            </div>
+            
+            <div class="user-menu">
+                <a href="newsign.html">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+                <a href="rides.html">
+                    <i class="fas fa-history"></i>
+                    My Rides
+                </a>
+                <a href="#" class="active">
+                    <i class="fas fa-car"></i>
+                    Find Vehicles
+                </a>
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=6c63ff&color=fff" alt="User">
+                    <span>John Doe</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar Filters -->
+        <aside class="sidebar">
+            <div class="filter-card">
+                <h3 class="filter-title">
+                    <i class="fas fa-filter"></i>
+                    Filters
+                </h3>
+                
+                <div class="filter-group">
+                    <label>Vehicle Type</label>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" checked>
+                            <span>Sedan</span>
+                            <span class="vehicle-count">12</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" checked>
+                            <span>SUV</span>
+                            <span class="vehicle-count">8</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            <span>Van</span>
+                            <span class="vehicle-count">4</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            <span>Luxury</span>
+                            <span class="vehicle-count">6</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            <span>Electric</span>
+                            <span class="vehicle-count">5</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Price Range (per km)</label>
+                    <div class="price-range">
+                        <input type="number" class="price-input" placeholder="Min" value="0">
+                        <span>to</span>
+                        <input type="number" class="price-input" placeholder="Max" value="50">
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Capacity</label>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" checked>
+                            <span>1-3 passengers</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" checked>
+                            <span>4 passengers</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            <span>5+ passengers</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="filter-group">
+                    <label>Driver Rating</label>
+                    <div class="filter-options">
+                        <label class="filter-option">
+                            <input type="checkbox" checked>
+                            <span>4.5+ stars</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" checked>
+                            <span>4.0+ stars</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox">
+                            <span>Any rating</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <button class="apply-filters">
+                    <i class="fas fa-sync-alt"></i>
+                    Apply Filters
+                </button>
+            </div>
+            
+            <div class="filter-card">
+                <h3 class="filter-title">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Current Location
+                </h3>
+                <p style="color: #666; margin-bottom: 15px;">Downtown Area, City Center</p>
+                <input type="text" class="form-control" placeholder="Change location..." style="margin-bottom: 15px;">
+                <button class="apply-filters" style="background: #4CAF50;">
+                    <i class="fas fa-location-arrow"></i>
+                    Use Current Location
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Available Vehicles</h1>
+                    <p class="page-subtitle">35 vehicles available near you</p>
+                </div>
+                
+                <div class="sort-controls">
+                    <select class="sort-select">
+                        <option>Sort by: Recommended</option>
+                        <option>Price: Low to High</option>
+                        <option>Price: High to Low</option>
+                        <option>Rating: Highest First</option>
+                        <option>Distance: Nearest First</option>
+                    </select>
+                    
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button class="view-btn" data-view="map">
+                            <i class="fas fa-map"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vehicles Grid -->
+            <div id="vehiclesGrid" class="vehicles-grid">
+                <!-- Vehicle 1 -->
+                <div class="vehicle-card">
+                    <div class="vehicle-badge">
+                        <i class="fas fa-bolt"></i>
+                        Electric
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Tesla Model 3" class="vehicle-image">
+                    <div class="vehicle-content">
+                        <div class="vehicle-header">
+                            <div>
+                                <h3 class="vehicle-title">Tesla Model 3</h3>
+                                <p class="vehicle-subtitle">
+                                    <i class="fas fa-user"></i>
+                                    Michael Chen • 4.8 ★
+                                </p>
+                            </div>
+                            <div class="vehicle-rating">
+                                <i class="fas fa-star"></i>
+                                4.8
+                            </div>
+                        </div>
+                        
+                        <div class="vehicle-details">
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                4 passengers
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-suitcase"></i>
+                                2 large bags
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-wifi"></i>
+                                Free WiFi
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-plug"></i>
+                                Charging Port
+                            </div>
+                        </div>
+                        
+                        <div class="vehicle-footer">
+                            <div class="vehicle-price">
+                                $1.20<span>/km</span>
+                            </div>
+                            <button class="book-btn">
+                                <i class="fas fa-calendar-alt"></i>
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vehicle 2 -->
+                <div class="vehicle-card">
+                    <div class="vehicle-badge">
+                        <i class="fas fa-crown"></i>
+                        Luxury
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Mercedes E-Class" class="vehicle-image">
+                    <div class="vehicle-content">
+                        <div class="vehicle-header">
+                            <div>
+                                <h3 class="vehicle-title">Mercedes E-Class</h3>
+                                <p class="vehicle-subtitle">
+                                    <i class="fas fa-user"></i>
+                                    David Wilson • 4.9 ★
+                                </p>
+                            </div>
+                            <div class="vehicle-rating">
+                                <i class="fas fa-star"></i>
+                                4.9
+                            </div>
+                        </div>
+                        
+                        <div class="vehicle-details">
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                4 passengers
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-suitcase"></i>
+                                3 large bags
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-wine-glass-alt"></i>
+                                Refreshments
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-tv"></i>
+                                Entertainment
+                            </div>
+                        </div>
+                        
+                        <div class="vehicle-footer">
+                            <div class="vehicle-price">
+                                $2.50<span>/km</span>
+                            </div>
+                            <button class="book-btn">
+                                <i class="fas fa-calendar-alt"></i>
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vehicle 3 -->
+                <div class="vehicle-card">
+                    <div class="vehicle-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        Family Safe
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Toyota Camry" class="vehicle-image">
+                    <div class="vehicle-content">
+                        <div class="vehicle-header">
+                            <div>
+                                <h3 class="vehicle-title">Toyota Camry 2022</h3>
+                                <p class="vehicle-subtitle">
+                                    <i class="fas fa-user"></i>
+                                    Sarah Johnson • 4.7 ★
+                                </p>
+                            </div>
+                            <div class="vehicle-rating">
+                                <i class="fas fa-star"></i>
+                                4.7
+                            </div>
+                        </div>
+                        
+                        <div class="vehicle-details">
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                5 passengers
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-suitcase"></i>
+                                3 large bags
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-baby-carriage"></i>
+                                Child seat available
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-snowflake"></i>
+                                AC & Heating
+                            </div>
+                        </div>
+                        
+                        <div class="vehicle-footer">
+                            <div class="vehicle-price">
+                                $0.95<span>/km</span>
+                            </div>
+                            <button class="book-btn">
+                                <i class="fas fa-calendar-alt"></i>
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vehicle 4 -->
+                <div class="vehicle-card">
+                    <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Honda CR-V" class="vehicle-image">
+                    <div class="vehicle-content">
+                        <div class="vehicle-header">
+                            <div>
+                                <h3 class="vehicle-title">Honda CR-V SUV</h3>
+                                <p class="vehicle-subtitle">
+                                    <i class="fas fa-user"></i>
+                                    Robert Brown • 4.6 ★
+                                </p>
+                            </div>
+                            <div class="vehicle-rating">
+                                <i class="fas fa-star"></i>
+                                4.6
+                            </div>
+                        </div>
+                        
+                        <div class="vehicle-details">
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                5 passengers
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-suitcase"></i>
+                                4 large bags
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-snowflake"></i>
+                                AC & Heating
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-car"></i>
+                                All-wheel drive
+                            </div>
+                        </div>
+                        
+                        <div class="vehicle-footer">
+                            <div class="vehicle-price">
+                                $1.35<span>/km</span>
+                            </div>
+                            <button class="book-btn">
+                                <i class="fas fa-calendar-alt"></i>
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vehicle 5 -->
+                <div class="vehicle-card">
+                    <div class="vehicle-badge">
+                        <i class="fas fa-dollar-sign"></i>
+                        Budget
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Hyundai Elantra" class="vehicle-image">
+                    <div class="vehicle-content">
+                        <div class="vehicle-header">
+                            <div>
+                                <h3 class="vehicle-title">Hyundai Elantra</h3>
+                                <p class="vehicle-subtitle">
+                                    <i class="fas fa-user"></i>
+                                    Maria Garcia • 4.5 ★
+                                </p>
+                            </div>
+                            <div class="vehicle-rating">
+                                <i class="fas fa-star"></i>
+                                4.5
+                            </div>
+                        </div>
+                        
+                        <div class="vehicle-details">
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                4 passengers
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-suitcase"></i>
+                                2 large bags
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-snowflake"></i>
+                                AC & Heating
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-gas-pump"></i>
+                                Fuel efficient
+                            </div>
+                        </div>
+                        
+                        <div class="vehicle-footer">
+                            <div class="vehicle-price">
+                                $0.75<span>/km</span>
+                            </div>
+                            <button class="book-btn">
+                                <i class="fas fa-calendar-alt"></i>
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vehicle 6 -->
+                <div class="vehicle-card">
+                    <div class="vehicle-badge">
+                        <i class="fas fa-users"></i>
+                        Group
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Toyota Sienna" class="vehicle-image">
+                    <div class="vehicle-content">
+                        <div class="vehicle-header">
+                            <div>
+                                <h3 class="vehicle-title">Toyota Sienna Van</h3>
+                                <p class="vehicle-subtitle">
+                                    <i class="fas fa-user"></i>
+                                    James Miller • 4.8 ★
+                                </p>
+                            </div>
+                            <div class="vehicle-rating">
+                                <i class="fas fa-star"></i>
+                                4.8
+                            </div>
+                        </div>
+                        
+                        <div class="vehicle-details">
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                7 passengers
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-suitcase"></i>
+                                6 large bags
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-wheelchair"></i>
+                                Wheelchair accessible
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-tv"></i>
+                                Entertainment
+                            </div>
+                        </div>
+                        
+                        <div class="vehicle-footer">
+                            <div class="vehicle-price">
+                                $1.80<span>/km</span>
+                            </div>
+                            <button class="book-btn">
+                                <i class="fas fa-calendar-alt"></i>
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map View -->
+            <div id="mapView" class="map-container">
+                <div class="map-placeholder">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h3>Interactive Map View</h3>
+                    <p>Available vehicles shown on map with real-time locations</p>
+                    <button class="book-btn" style="margin-top: 20px;">
+                        <i class="fas fa-map"></i>
+                        Load Live Map
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <button class="pagination-btn" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                    Previous
+                </button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <span>...</span>
+                <button class="pagination-btn">6</button>
+                <button class="pagination-btn">
+                    Next
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // DOM Elements
+        const gridViewBtn = document.querySelector('[data-view="grid"]');
+        const mapViewBtn = document.querySelector('[data-view="map"]');
+        const vehiclesGrid = document.getElementById('vehiclesGrid');
+        const mapView = document.getElementById('mapView');
+        const bookButtons = document.querySelectorAll('.book-btn');
+        const applyFiltersBtn = document.querySelector('.apply-filters');
+        const sortSelect = document.querySelector('.sort-select');
+
+        // View Toggle
+        function toggleView(view) {
+            if (view === 'grid') {
+                gridViewBtn.classList.add('active');
+                mapViewBtn.classList.remove('active');
+                vehiclesGrid.style.display = 'grid';
+                mapView.classList.remove('active');
+            } else {
+                mapViewBtn.classList.add('active');
+                gridViewBtn.classList.remove('active');
+                vehiclesGrid.style.display = 'none';
+                mapView.classList.add('active');
+            }
+        }
+
+        gridViewBtn.addEventListener('click', () => toggleView('grid'));
+        mapViewBtn.addEventListener('click', () => toggleView('map'));
+
+        // Book Button Handler
+        bookButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const vehicleTitle = this.closest('.vehicle-card').querySelector('.vehicle-title').textContent;
+                const vehiclePrice = this.closest('.vehicle-card').querySelector('.vehicle-price').textContent;
+                
+                // Show booking modal or redirect to booking page
+                alert(`Booking ${vehicleTitle}\nPrice: ${vehiclePrice}\n\nRedirecting to booking page...`);
+                
+                // In a real app, you would redirect to booking page
+                // window.location.href = `booking.html?vehicle=${encodeURIComponent(vehicleTitle)}`;
+                
+                // Disable button after click
+                this.disabled = true;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                
+                // Re-enable after 3 seconds (simulating booking process)
+                setTimeout(() => {
+                    this.disabled = false;
+                    this.innerHTML = '<i class="fas fa-calendar-alt"></i> Book Now';
+                }, 3000);
+            });
+        });
+
+        // Filter Application
+        applyFiltersBtn.addEventListener('click', function() {
+            const minPrice = document.querySelector('.price-input[placeholder="Min"]').value;
+            const maxPrice = document.querySelector('.price-input[placeholder="Max"]').value;
+            
+            // Show loading state
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Applying Filters...';
+            this.disabled = true;
+            
+            // Simulate filter application
+            setTimeout(() => {
+                alert(`Filters applied!\nPrice range: $${minPrice} - $${maxPrice} per km`);
+                
+                // Reset button
+                this.innerHTML = '<i class="fas fa-sync-alt"></i> Apply Filters';
+                this.disabled = false;
+                
+                // In a real app, you would filter the vehicle cards here
+                // filterVehicles(minPrice, maxPrice);
+            }, 1000);
+        });
+
+        // Sort Vehicles
+        sortSelect.addEventListener('change', function() {
+            const sortValue = this.value;
+            console.log(`Sorting by: ${sortValue}`);
+            
+            // Show sorting indicator
+            const originalValue = this.value;
+            this.disabled = true;
+            
+            // Simulate sorting delay
+            setTimeout(() => {
+                alert(`Vehicles sorted by: ${sortValue}`);
+                this.disabled = false;
+            }, 500);
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default view
+            toggleView('grid');
+            
+            // Add click handlers to filter options
+            document.querySelectorAll('.filter-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const checkbox = this.querySelector('input[type="checkbox"]');
+                    checkbox.checked = !checkbox.checked;
+                    
+                    // Update count if needed
+                    const countElement = this.querySelector('.vehicle-count');
+                    if (countElement) {
+                        // Simulate count update
+                        const currentCount = parseInt(countElement.textContent);
+                        if (checkbox.checked) {
+                            countElement.textContent = currentCount + 1;
+                        } else {
+                            countElement.textContent = Math.max(0, currentCount - 1);
+                        }
+                    }
+                });
+            });
+        });
+
+        // Vehicle data for potential API integration
+        const vehicleData = [
+            {
+                id: 1,
+                name: "Tesla Model 3",
+                type: "Electric",
+                driver: "Michael Chen",
+                rating: 4.8,
+                passengers: 4,
+                bags: 2,
+                price: 1.20,
+                features: ["Free WiFi", "Charging Port"],
+                image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
+            },
+            // More vehicles would be added here
+        ];
+    </script>
+</body>
+</html>
