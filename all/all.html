@@ -6,35 +6,39 @@
     <title>TransitGo | Available Vehicles</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ===== RESET & BASE STYLES ===== */
+        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-            min-height: 100vh;
+            background: #f8f9fa;
             color: #333;
             line-height: 1.6;
         }
 
+        /* ===== LAYOUT ===== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
         /* ===== HEADER ===== */
         .header {
-            background: linear-gradient(135deg, #6c63ff 0%, #4a44c6 100%);
-            color: white;
-            padding: 20px 40px;
-            box-shadow: 0 4px 20px rgba(108, 99, 255, 0.2);
+            background: #ffffff;
+            padding: 20px 0;
+            border-bottom: 1px solid #eaeaea;
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
+        .header .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -46,44 +50,48 @@
             gap: 12px;
             font-size: 24px;
             font-weight: 700;
+            color: #4a44c6;
+            text-decoration: none;
         }
 
         .logo i {
             font-size: 28px;
         }
 
-        .user-menu {
+        .nav-links {
             display: flex;
+            gap: 30px;
             align-items: center;
-            gap: 20px;
         }
 
-        .user-menu a {
-            color: white;
+        .nav-links a {
+            color: #555;
             text-decoration: none;
+            font-weight: 500;
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: background 0.3s;
+            padding: 10px 0;
+            transition: color 0.2s;
         }
 
-        .user-menu a:hover {
-            background: rgba(255, 255, 255, 0.1);
+        .nav-links a:hover {
+            color: #4a44c6;
         }
 
-        .user-menu a.active {
-            background: rgba(255, 255, 255, 0.2);
+        .nav-links a.active {
+            color: #4a44c6;
+            border-bottom: 2px solid #4a44c6;
         }
 
         .user-profile {
             display: flex;
             align-items: center;
             gap: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
-            border-radius: 50px;
+            padding: 8px 16px;
+            background: #f8f9fa;
+            border-radius: 20px;
+            margin-left: 20px;
         }
 
         .user-profile img {
@@ -93,217 +101,135 @@
             object-fit: cover;
         }
 
-        /* ===== MAIN CONTAINER ===== */
-        .main-container {
-            max-width: 1400px;
-            margin: 30px auto;
-            padding: 0 20px;
-            display: flex;
-            gap: 30px;
-        }
-
-        /* ===== SIDEBAR FILTERS ===== */
-        .sidebar {
-            width: 280px;
-            flex-shrink: 0;
-        }
-
-        .filter-card {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
-        }
-
-        .filter-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #4a44c6;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .filter-title i {
-            font-size: 20px;
-        }
-
-        .filter-group {
-            margin-bottom: 25px;
-        }
-
-        .filter-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
-            color: #444;
-            font-size: 14px;
-        }
-
-        .filter-options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .filter-option {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 8px;
-            transition: background 0.3s;
-        }
-
-        .filter-option:hover {
-            background: #f5f7fa;
-        }
-
-        .filter-option input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #6c63ff;
-        }
-
-        .filter-option span {
-            flex: 1;
-            font-size: 14px;
-        }
-
-        .vehicle-count {
-            background: #6c63ff;
-            color: white;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .price-range {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .price-input {
-            flex: 1;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 14px;
-            width: 100%;
-        }
-
-        .price-input:focus {
-            outline: none;
-            border-color: #6c63ff;
-            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
-        }
-
-        .apply-filters {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #6c63ff 0%, #4a44c6 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .apply-filters:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.3);
-        }
-
         /* ===== MAIN CONTENT ===== */
         .main-content {
-            flex: 1;
+            padding: 40px 0;
         }
 
+        /* ===== PAGE HEADER ===== */
         .page-header {
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            color: #222;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        /* ===== CONTROLS BAR ===== */
+        .controls-bar {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            background: white;
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
-        .page-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #333;
+        .stats {
+            display: flex;
+            gap: 25px;
         }
 
-        .page-subtitle {
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
             color: #666;
-            font-size: 16px;
-            margin-top: 5px;
+            font-size: 14px;
+            margin-bottom: 5px;
         }
 
-        .sort-controls {
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4a44c6;
+        }
+
+        .controls {
             display: flex;
             gap: 15px;
             align-items: center;
         }
 
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 12px 40px 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 250px;
+            font-size: 14px;
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
         .sort-select {
-            padding: 12px 20px;
+            padding: 12px 15px;
             border: 1px solid #ddd;
             border-radius: 8px;
             background: white;
             font-size: 14px;
-            color: #444;
-            min-width: 200px;
+            min-width: 180px;
             cursor: pointer;
-            transition: border-color 0.3s;
-        }
-
-        .sort-select:focus {
-            outline: none;
-            border-color: #6c63ff;
         }
 
         /* ===== VEHICLES GRID ===== */
         .vehicles-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 25px;
+            margin-bottom: 50px;
         }
 
+        /* ===== VEHICLE CARD ===== */
         .vehicle-card {
             background: white;
-            border-radius: 16px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s;
-            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #eee;
         }
 
         .vehicle-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .vehicle-image-container {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
         }
 
         .vehicle-image {
-            height: 200px;
             width: 100%;
+            height: 100%;
             object-fit: cover;
-            display: block;
+            transition: transform 0.3s;
+        }
+
+        .vehicle-card:hover .vehicle-image {
+            transform: scale(1.05);
         }
 
         .vehicle-badge {
@@ -319,72 +245,69 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            z-index: 2;
         }
 
         .vehicle-content {
-            padding: 20px;
+            padding: 25px;
         }
 
         .vehicle-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .vehicle-title {
             font-size: 20px;
             font-weight: 600;
-            color: #333;
+            color: #222;
             margin-bottom: 5px;
         }
 
-        .vehicle-subtitle {
+        .vehicle-driver {
             color: #666;
             font-size: 14px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
         }
 
-        .vehicle-subtitle i {
-            font-size: 13px;
+        .vehicle-driver i {
+            color: #4a44c6;
         }
 
         .vehicle-rating {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 5px;
             background: #fff8e1;
-            padding: 6px 12px;
+            padding: 4px 10px;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: #ff9800;
+            margin-left: 10px;
         }
 
         .vehicle-details {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 15px;
-            margin: 20px 0;
-            padding-bottom: 20px;
+            margin-bottom: 25px;
+            padding-bottom: 25px;
             border-bottom: 1px solid #eee;
         }
 
         .detail-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            color: #666;
+            gap: 10px;
             font-size: 14px;
+            color: #555;
         }
 
         .detail-item i {
-            color: #6c63ff;
+            color: #4a44c6;
             width: 20px;
-            font-size: 14px;
+            text-align: center;
         }
 
         .vehicle-footer {
@@ -401,62 +324,27 @@
 
         .vehicle-price span {
             font-size: 14px;
-            font-weight: normal;
+            font-weight: 400;
             color: #666;
         }
 
         .book-btn {
             padding: 12px 25px;
-            background: linear-gradient(135deg, #6c63ff 0%, #4a44c6 100%);
+            background: #4a44c6;
             color: white;
             border: none;
             border-radius: 8px;
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: background 0.2s;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
         .book-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.3);
-        }
-
-        .book-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* ===== NO RESULTS ===== */
-        .no-results {
-            text-align: center;
-            padding: 60px 20px;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            grid-column: 1 / -1;
-        }
-
-        .no-results i {
-            font-size: 64px;
-            color: #6c63ff;
-            margin-bottom: 20px;
-            opacity: 0.7;
-        }
-
-        .no-results h3 {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .no-results p {
-            color: #666;
-            margin-bottom: 30px;
+            background: #3a36a6;
         }
 
         /* ===== PAGINATION ===== */
@@ -465,7 +353,7 @@
             justify-content: center;
             align-items: center;
             gap: 10px;
-            margin-top: 40px;
+            padding: 30px 0;
         }
 
         .pagination-btn {
@@ -474,8 +362,8 @@
             background: white;
             border-radius: 8px;
             cursor: pointer;
-            color: #666;
-            transition: all 0.3s;
+            color: #555;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -483,74 +371,161 @@
         }
 
         .pagination-btn:hover {
-            border-color: #6c63ff;
-            color: #6c63ff;
+            border-color: #4a44c6;
+            color: #4a44c6;
         }
 
         .pagination-btn.active {
-            background: #6c63ff;
+            background: #4a44c6;
             color: white;
-            border-color: #6c63ff;
+            border-color: #4a44c6;
         }
 
-        /* ===== RESPONSIVE DESIGN ===== */
-        @media (max-width: 1100px) {
-            .main-container {
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .no-vehicles {
+            text-align: center;
+            padding: 80px 20px;
+            background: white;
+            border-radius: 12px;
+            margin: 40px 0;
+        }
+
+        .no-vehicles i {
+            font-size: 64px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .no-vehicles h3 {
+            font-size: 24px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .no-vehicles p {
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #222;
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section ul li a {
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-section ul li a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #444;
+            color: #bbb;
+            font-size: 14px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1200px) {
+            .vehicles-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .controls-bar {
                 flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-            }
-            
-            .filter-card {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
                 gap: 20px;
+                align-items: flex-start;
             }
             
-            .filter-group {
-                margin-bottom: 0;
+            .controls {
+                width: 100%;
+                justify-content: space-between;
             }
         }
 
         @media (max-width: 768px) {
-            .header {
-                padding: 15px 20px;
-            }
-            
-            .header-content {
+            .header .container {
                 flex-direction: column;
-                gap: 15px;
-                text-align: center;
+                gap: 20px;
             }
             
-            .user-menu {
+            .nav-links {
                 flex-wrap: wrap;
                 justify-content: center;
             }
             
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
-            }
-            
-            .sort-controls {
-                width: 100%;
-            }
-            
-            .sort-select {
-                flex: 1;
-                min-width: auto;
+            .user-profile {
+                margin-left: 0;
             }
             
             .vehicles-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box input {
+                width: 100%;
+            }
+            
+            .sort-select {
+                width: 100%;
+            }
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 576px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
             .vehicle-footer {
                 flex-direction: column;
                 gap: 15px;
@@ -561,33 +536,24 @@
                 width: 100%;
                 justify-content: center;
             }
-            
-            .user-profile {
-                padding: 8px 15px;
-            }
-            
-            .user-menu a {
-                padding: 8px 15px;
-                font-size: 14px;
-            }
         }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header class="header">
-        <div class="header-content">
-            <div class="logo">
+        <div class="container">
+            <a href="#" class="logo">
                 <i class="fas fa-car"></i>
                 <span>TransitGo</span>
-            </div>
+            </a>
             
-            <div class="user-menu">
+            <div class="nav-links">
                 <a href="newsign.html">
                     <i class="fas fa-home"></i>
                     Home
                 </a>
-                <a href="rides.html">
+                <a href="#">
                     <i class="fas fa-history"></i>
                     My Rides
                 </a>
@@ -595,149 +561,102 @@
                     <i class="fas fa-car"></i>
                     Find Vehicles
                 </a>
+                <a href="#">
+                    <i class="fas fa-bell"></i>
+                    Notifications
+                </a>
+                
                 <div class="user-profile">
-                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=6c63ff&color=fff" alt="User">
-                    <span>John Doe</span>
+                    <img src="https://ui-avatars.com/api/?name=Alex+Smith&background=4a44c6&color=fff" alt="User">
+                    <span>Alex Smith</span>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Main Container -->
-    <div class="main-container">
-        <!-- Sidebar Filters -->
-        <aside class="sidebar">
-            <div class="filter-card">
-                <h3 class="filter-title">
-                    <i class="fas fa-filter"></i>
-                    Filters
-                </h3>
-                
-                <div class="filter-group">
-                    <label>Vehicle Type</label>
-                    <div class="filter-options">
-                        <label class="filter-option">
-                            <input type="checkbox" checked>
-                            <span>Sedan</span>
-                            <span class="vehicle-count">12</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" checked>
-                            <span>SUV</span>
-                            <span class="vehicle-count">8</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span>Van</span>
-                            <span class="vehicle-count">4</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span>Luxury</span>
-                            <span class="vehicle-count">6</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span>Electric</span>
-                            <span class="vehicle-count">5</span>
-                        </label>
-                    </div>
-                </div>
-                
-                <div class="filter-group">
-                    <label>Price Range (per km)</label>
-                    <div class="price-range">
-                        <input type="number" class="price-input" placeholder="Min" value="0">
-                        <span>to</span>
-                        <input type="number" class="price-input" placeholder="Max" value="50">
-                    </div>
-                </div>
-                
-                <div class="filter-group">
-                    <label>Capacity</label>
-                    <div class="filter-options">
-                        <label class="filter-option">
-                            <input type="checkbox" checked>
-                            <span>1-3 passengers</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" checked>
-                            <span>4 passengers</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span>5+ passengers</span>
-                        </label>
-                    </div>
-                </div>
-                
-                <button class="apply-filters">
-                    <i class="fas fa-sync-alt"></i>
-                    Apply Filters
-                </button>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
             <!-- Page Header -->
             <div class="page-header">
-                <div>
-                    <h1 class="page-title">Available Vehicles</h1>
-                    <p class="page-subtitle">6 vehicles available near you</p>
+                <h1>Available Vehicles</h1>
+                <p>Choose from our selection of verified vehicles and professional drivers</p>
+            </div>
+
+            <!-- Controls Bar -->
+            <div class="controls-bar">
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Vehicles</span>
+                        <span class="stat-value">24</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Near You</span>
+                        <span class="stat-value">12</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Avg. Price/km</span>
+                        <span class="stat-value">$1.45</span>
+                    </div>
                 </div>
                 
-                <div class="sort-controls">
+                <div class="controls">
+                    <div class="search-box">
+                        <input type="text" placeholder="Search vehicles...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    
                     <select class="sort-select">
                         <option>Sort by: Recommended</option>
                         <option>Price: Low to High</option>
                         <option>Price: High to Low</option>
                         <option>Rating: Highest First</option>
-                        <option>Distance: Nearest First</option>
+                        <option>Distance: Nearest</option>
                     </select>
                 </div>
             </div>
 
             <!-- Vehicles Grid -->
-            <div id="vehiclesGrid" class="vehicles-grid">
+            <div class="vehicles-grid">
                 <!-- Vehicle 1 -->
                 <div class="vehicle-card">
-                    <div class="vehicle-badge">
-                        <i class="fas fa-bolt"></i>
-                        Electric
+                    <div class="vehicle-image-container">
+                        <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                             alt="Tesla Model 3" class="vehicle-image">
+                        <div class="vehicle-badge">
+                            <i class="fas fa-bolt"></i>
+                            Electric
+                        </div>
                     </div>
-                    <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Tesla Model 3" class="vehicle-image">
                     <div class="vehicle-content">
                         <div class="vehicle-header">
-                            <div>
-                                <h3 class="vehicle-title">Tesla Model 3</h3>
-                                <p class="vehicle-subtitle">
-                                    <i class="fas fa-user"></i>
-                                    Michael Chen • 4.8 ★
-                                </p>
-                            </div>
-                            <div class="vehicle-rating">
-                                <i class="fas fa-star"></i>
-                                4.8
+                            <h3 class="vehicle-title">Tesla Model 3</h3>
+                            <div class="vehicle-driver">
+                                <i class="fas fa-user"></i>
+                                Michael Chen
+                                <span class="vehicle-rating">
+                                    <i class="fas fa-star"></i>
+                                    4.8
+                                </span>
                             </div>
                         </div>
                         
                         <div class="vehicle-details">
                             <div class="detail-item">
                                 <i class="fas fa-users"></i>
-                                4 passengers
+                                <span>4 Passengers</span>
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-suitcase"></i>
-                                2 large bags
+                                <span>2 Large Bags</span>
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-wifi"></i>
-                                Free WiFi
+                                <span>Free WiFi</span>
                             </div>
                             <div class="detail-item">
-                                <i class="fas fa-plug"></i>
-                                Charging Port
+                                <i class="fas fa-snowflake"></i>
+                                <span>AC Available</span>
                             </div>
                         </div>
                         
@@ -755,42 +674,43 @@
 
                 <!-- Vehicle 2 -->
                 <div class="vehicle-card">
-                    <div class="vehicle-badge">
-                        <i class="fas fa-crown"></i>
-                        Luxury
+                    <div class="vehicle-image-container">
+                        <img src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                             alt="Mercedes E-Class" class="vehicle-image">
+                        <div class="vehicle-badge">
+                            <i class="fas fa-crown"></i>
+                            Luxury
+                        </div>
                     </div>
-                    <img src="https://images.unsplash.com/photo-1553440569-bcc63803a83d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Mercedes E-Class" class="vehicle-image">
                     <div class="vehicle-content">
                         <div class="vehicle-header">
-                            <div>
-                                <h3 class="vehicle-title">Mercedes E-Class</h3>
-                                <p class="vehicle-subtitle">
-                                    <i class="fas fa-user"></i>
-                                    David Wilson • 4.9 ★
-                                </p>
-                            </div>
-                            <div class="vehicle-rating">
-                                <i class="fas fa-star"></i>
-                                4.9
+                            <h3 class="vehicle-title">Mercedes E-Class</h3>
+                            <div class="vehicle-driver">
+                                <i class="fas fa-user"></i>
+                                David Wilson
+                                <span class="vehicle-rating">
+                                    <i class="fas fa-star"></i>
+                                    4.9
+                                </span>
                             </div>
                         </div>
                         
                         <div class="vehicle-details">
                             <div class="detail-item">
                                 <i class="fas fa-users"></i>
-                                4 passengers
+                                <span>4 Passengers</span>
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-suitcase"></i>
-                                3 large bags
+                                <span>3 Large Bags</span>
                             </div>
                             <div class="detail-item">
-                                <i class="fas fa-wine-glass-alt"></i>
-                                Refreshments
+                                <i class="fas fa-glass-whiskey"></i>
+                                <span>Refreshments</span>
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-tv"></i>
-                                Entertainment
+                                <span>Entertainment</span>
                             </div>
                         </div>
                         
@@ -808,42 +728,43 @@
 
                 <!-- Vehicle 3 -->
                 <div class="vehicle-card">
-                    <div class="vehicle-badge">
-                        <i class="fas fa-shield-alt"></i>
-                        Family Safe
+                    <div class="vehicle-image-container">
+                        <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                             alt="Toyota Camry" class="vehicle-image">
+                        <div class="vehicle-badge">
+                            <i class="fas fa-shield-alt"></i>
+                            Family Safe
+                        </div>
                     </div>
-                    <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Toyota Camry" class="vehicle-image">
                     <div class="vehicle-content">
                         <div class="vehicle-header">
-                            <div>
-                                <h3 class="vehicle-title">Toyota Camry 2022</h3>
-                                <p class="vehicle-subtitle">
-                                    <i class="fas fa-user"></i>
-                                    Sarah Johnson • 4.7 ★
-                                </p>
-                            </div>
-                            <div class="vehicle-rating">
-                                <i class="fas fa-star"></i>
-                                4.7
+                            <h3 class="vehicle-title">Toyota Camry 2022</h3>
+                            <div class="vehicle-driver">
+                                <i class="fas fa-user"></i>
+                                Sarah Johnson
+                                <span class="vehicle-rating">
+                                    <i class="fas fa-star"></i>
+                                    4.7
+                                </span>
                             </div>
                         </div>
                         
                         <div class="vehicle-details">
                             <div class="detail-item">
                                 <i class="fas fa-users"></i>
-                                5 passengers
+                                <span>5 Passengers</span>
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-suitcase"></i>
-                                3 large bags
+                                <span>3 Large Bags</span>
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-baby-carriage"></i>
-                                Child seat available
+                                <span>Child Seat</span>
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-snowflake"></i>
-                                AC & Heating
+                                <span>AC & Heating</span>
                             </div>
                         </div>
                         
@@ -861,38 +782,39 @@
 
                 <!-- Vehicle 4 -->
                 <div class="vehicle-card">
-                    <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Honda CR-V" class="vehicle-image">
+                    <div class="vehicle-image-container">
+                        <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                             alt="Honda CR-V" class="vehicle-image">
+                    </div>
                     <div class="vehicle-content">
                         <div class="vehicle-header">
-                            <div>
-                                <h3 class="vehicle-title">Honda CR-V SUV</h3>
-                                <p class="vehicle-subtitle">
-                                    <i class="fas fa-user"></i>
-                                    Robert Brown • 4.6 ★
-                                </p>
-                            </div>
-                            <div class="vehicle-rating">
-                                <i class="fas fa-star"></i>
-                                4.6
+                            <h3 class="vehicle-title">Honda CR-V SUV</h3>
+                            <div class="vehicle-driver">
+                                <i class="fas fa-user"></i>
+                                Robert Brown
+                                <span class="vehicle-rating">
+                                    <i class="fas fa-star"></i>
+                                    4.6
+                                </span>
                             </div>
                         </div>
                         
                         <div class="vehicle-details">
                             <div class="detail-item">
                                 <i class="fas fa-users"></i>
-                                5 passengers
+                                <span>5 Passengers</span>
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-suitcase"></i>
-                                4 large bags
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-snowflake"></i>
-                                AC & Heating
+                                <span>4 Large Bags</span>
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-car"></i>
-                                All-wheel drive
+                                <span>AWD</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-snowflake"></i>
+                                <span>AC Available</span>
                             </div>
                         </div>
                         
@@ -910,42 +832,43 @@
 
                 <!-- Vehicle 5 -->
                 <div class="vehicle-card">
-                    <div class="vehicle-badge">
-                        <i class="fas fa-dollar-sign"></i>
-                        Budget
+                    <div class="vehicle-image-container">
+                        <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                             alt="Hyundai Elantra" class="vehicle-image">
+                        <div class="vehicle-badge">
+                            <i class="fas fa-dollar-sign"></i>
+                            Budget
+                        </div>
                     </div>
-                    <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Hyundai Elantra" class="vehicle-image">
                     <div class="vehicle-content">
                         <div class="vehicle-header">
-                            <div>
-                                <h3 class="vehicle-title">Hyundai Elantra</h3>
-                                <p class="vehicle-subtitle">
-                                    <i class="fas fa-user"></i>
-                                    Maria Garcia • 4.5 ★
-                                </p>
-                            </div>
-                            <div class="vehicle-rating">
-                                <i class="fas fa-star"></i>
-                                4.5
+                            <h3 class="vehicle-title">Hyundai Elantra</h3>
+                            <div class="vehicle-driver">
+                                <i class="fas fa-user"></i>
+                                Maria Garcia
+                                <span class="vehicle-rating">
+                                    <i class="fas fa-star"></i>
+                                    4.5
+                                </span>
                             </div>
                         </div>
                         
                         <div class="vehicle-details">
                             <div class="detail-item">
                                 <i class="fas fa-users"></i>
-                                4 passengers
+                                <span>4 Passengers</span>
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-suitcase"></i>
-                                2 large bags
-                            </div>
-                            <div class="detail-item">
-                                <i class="fas fa-snowflake"></i>
-                                AC & Heating
+                                <span>2 Large Bags</span>
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-gas-pump"></i>
-                                Fuel efficient
+                                <span>Fuel Efficient</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-snowflake"></i>
+                                <span>AC Available</span>
                             </div>
                         </div>
                         
@@ -963,42 +886,43 @@
 
                 <!-- Vehicle 6 -->
                 <div class="vehicle-card">
-                    <div class="vehicle-badge">
-                        <i class="fas fa-users"></i>
-                        Group
+                    <div class="vehicle-image-container">
+                        <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" 
+                             alt="Toyota Sienna" class="vehicle-image">
+                        <div class="vehicle-badge">
+                            <i class="fas fa-users"></i>
+                            Group
+                        </div>
                     </div>
-                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Toyota Sienna" class="vehicle-image">
                     <div class="vehicle-content">
                         <div class="vehicle-header">
-                            <div>
-                                <h3 class="vehicle-title">Toyota Sienna Van</h3>
-                                <p class="vehicle-subtitle">
-                                    <i class="fas fa-user"></i>
-                                    James Miller • 4.8 ★
-                                </p>
-                            </div>
-                            <div class="vehicle-rating">
-                                <i class="fas fa-star"></i>
-                                4.8
+                            <h3 class="vehicle-title">Toyota Sienna Van</h3>
+                            <div class="vehicle-driver">
+                                <i class="fas fa-user"></i>
+                                James Miller
+                                <span class="vehicle-rating">
+                                    <i class="fas fa-star"></i>
+                                    4.8
+                                </span>
                             </div>
                         </div>
                         
                         <div class="vehicle-details">
                             <div class="detail-item">
                                 <i class="fas fa-users"></i>
-                                7 passengers
+                                <span>7 Passengers</span>
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-suitcase"></i>
-                                6 large bags
+                                <span>6 Large Bags</span>
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-wheelchair"></i>
-                                Wheelchair accessible
+                                <span>Accessible</span>
                             </div>
                             <div class="detail-item">
                                 <i class="fas fa-tv"></i>
-                                Entertainment
+                                <span>Entertainment</span>
                             </div>
                         </div>
                         
@@ -1024,15 +948,66 @@
                 <button class="pagination-btn active">1</button>
                 <button class="pagination-btn">2</button>
                 <button class="pagination-btn">3</button>
-                <span style="padding: 10px;">...</span>
-                <button class="pagination-btn">6</button>
+                <span style="padding: 10px; color: #888;">...</span>
+                <button class="pagination-btn">5</button>
                 <button class="pagination-btn">
                     Next
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
-        </main>
-    </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>TransitGo</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>For Riders</h4>
+                    <ul>
+                        <li><a href="#">How it Works</a></li>
+                        <li><a href="#">Safety</a></li>
+                        <li><a href="#">Cities</a></li>
+                        <li><a href="#">Help Center</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>For Drivers</h4>
+                    <ul>
+                        <li><a href="#">Drive with Us</a></li>
+                        <li><a href="#">Requirements</a></li>
+                        <li><a href="#">Earnings</a></li>
+                        <li><a href="#">Driver Help</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                &copy; 2024 TransitGo. All rights reserved.
+            </div>
+        </div>
+    </footer>
 
     <script>
         // Make buttons interactive
@@ -1043,46 +1018,56 @@
                     const vehicleTitle = this.closest('.vehicle-card').querySelector('.vehicle-title').textContent;
                     const vehiclePrice = this.closest('.vehicle-card').querySelector('.vehicle-price').textContent;
                     
-                    alert(`Booking: ${vehicleTitle}\nPrice: ${vehiclePrice}\n\nRedirecting to booking page...`);
+                    // Show booking confirmation
+                    alert(`Booking Confirmation\n\nVehicle: ${vehicleTitle}\nPrice: ${vehiclePrice}\n\nYour ride has been booked!`);
                     
-                    // Simulate booking process
+                    // Button loading state
                     const originalHTML = this.innerHTML;
-                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
                     this.disabled = true;
                     
+                    // Simulate booking process
                     setTimeout(() => {
-                        this.innerHTML = originalHTML;
-                        this.disabled = false;
-                    }, 2000);
+                        this.innerHTML = '<i class="fas fa-check"></i> Booked!';
+                        setTimeout(() => {
+                            this.innerHTML = originalHTML;
+                            this.disabled = false;
+                        }, 1500);
+                    }, 1000);
                 });
             });
-
-            // Filter button
-            document.querySelector('.apply-filters').addEventListener('click', function() {
-                const minPrice = document.querySelector('.price-input[placeholder="Min"]').value;
-                const maxPrice = document.querySelector('.price-input[placeholder="Max"]').value;
+            
+            // Search functionality
+            const searchInput = document.querySelector('.search-box input');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const vehicleCards = document.querySelectorAll('.vehicle-card');
                 
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Applying...';
-                this.disabled = true;
-                
-                setTimeout(() => {
-                    alert(`Filters applied!\nPrice range: $${minPrice} - $${maxPrice} per km`);
-                    this.innerHTML = '<i class="fas fa-sync-alt"></i> Apply Filters';
-                    this.disabled = false;
-                }, 1000);
+                vehicleCards.forEach(card => {
+                    const title = card.querySelector('.vehicle-title').textContent.toLowerCase();
+                    const driver = card.querySelector('.vehicle-driver').textContent.toLowerCase();
+                    
+                    if (title.includes(searchTerm) || driver.includes(searchTerm)) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
             });
-
-            // Sort select
-            document.querySelector('.sort-select').addEventListener('change', function() {
-                console.log('Sorting by:', this.value);
+            
+            // Sort functionality
+            const sortSelect = document.querySelector('.sort-select');
+            sortSelect.addEventListener('change', function() {
+                alert(`Sorting by: ${this.value}`);
             });
-
-            // Checkbox toggles
-            document.querySelectorAll('.filter-option').forEach(option => {
-                option.addEventListener('click', function(e) {
-                    if (e.target.type !== 'checkbox') {
-                        const checkbox = this.querySelector('input[type="checkbox"]');
-                        checkbox.checked = !checkbox.checked;
+            
+            // Pagination buttons
+            document.querySelectorAll('.pagination-btn:not(:disabled)').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (!this.classList.contains('active')) {
+                        document.querySelectorAll('.pagination-btn').forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        alert(`Loading page ${this.textContent.trim()}...`);
                     }
                 });
             });
