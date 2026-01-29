@@ -213,12 +213,62 @@
             display: none;
         }
 
-        .file-preview {
+        .file-preview-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
             margin-top: 15px;
+        }
+
+        .file-preview {
             max-width: 200px;
             border-radius: 8px;
             border: 1px solid #eee;
             display: none;
+        }
+
+        .file-name {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+            max-width: 200px;
+            word-break: break-word;
+        }
+
+        /* Document Requirements */
+        .doc-requirements {
+            background: #f8f9ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #6c63ff;
+        }
+
+        .doc-requirements h4 {
+            color: #4a44c6;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .doc-requirements ul {
+            list-style: none;
+            padding-left: 5px;
+        }
+
+        .doc-requirements li {
+            margin-bottom: 8px;
+            color: #555;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .doc-requirements li i {
+            color: #6c63ff;
+            margin-top: 3px;
+            font-size: 14px;
         }
 
         /* Driver Fields */
@@ -331,6 +381,10 @@
                 padding: 14px 10px;
                 font-size: 15px;
             }
+            
+            .file-preview-container {
+                flex-direction: column;
+            }
         }
 
         @media (max-width: 480px) {
@@ -370,6 +424,16 @@
                 </button>
             </div>
 
+            <!-- Document Requirements -->
+            <div class="doc-requirements">
+                <h4><i class="fas fa-info-circle"></i> Document Requirements</h4>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>All users:</strong> Valid National ID required for identity verification</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Drivers only:</strong> Driver's License, Vehicle Registration, and Proof of Insurance</li>
+                    <li><i class="fas fa-check-circle"></i> Clear photos or scanned copies accepted (JPG, PNG, PDF up to 5MB each)</li>
+                </ul>
+            </div>
+
             <!-- Registration Form -->
             <form id="registrationForm">
                 <!-- Personal Information -->
@@ -382,7 +446,7 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="fullName" class="required">Full Name</label>
-                            <input type="text" id="fullName" name="fullName" class="form-control" required placeholder="Enter your full name">
+                            <input type="text" id="fullName" name="fullName" class="form-control" required placeholder="As it appears on your National ID">
                         </div>
                         
                         <div class="form-group">
@@ -396,8 +460,63 @@
                         </div>
                         
                         <div class="form-group">
+                            <label for="nationalId" class="required">National ID Number</label>
+                            <input type="text" id="nationalId" name="nationalId" class="form-control" required placeholder="Your government-issued ID number">
+                        </div>
+                        
+                        <div class="form-group">
                             <label for="password" class="required">Password</label>
                             <input type="password" id="password" name="password" class="form-control" required placeholder="Create a strong password">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- National ID Upload (For Everyone) -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-id-card"></i>
+                        National ID Verification
+                    </h3>
+                    
+                    <p style="margin-bottom: 20px; color: #666; font-size: 14px;">
+                        Upload clear photos of your National ID (front and back)
+                    </p>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="required">National ID (Front)</label>
+                            <div class="file-upload-container" onclick="document.getElementById('nationalIdFront').click()">
+                                <div class="file-upload-label">
+                                    <i class="fas fa-id-card"></i>
+                                    <div>
+                                        <div class="file-upload-text">Upload National ID Front</div>
+                                        <div class="file-upload-subtext">Clear photo of the front side</div>
+                                    </div>
+                                </div>
+                                <input type="file" id="nationalIdFront" class="file-input" accept="image/*" onchange="previewFile(event, 'nationalIdFrontPreview', 'nationalIdFrontName')">
+                            </div>
+                            <div class="file-preview-container">
+                                <img id="nationalIdFrontPreview" class="file-preview" alt="National ID Front Preview">
+                                <div id="nationalIdFrontName" class="file-name"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="required">National ID (Back)</label>
+                            <div class="file-upload-container" onclick="document.getElementById('nationalIdBack').click()">
+                                <div class="file-upload-label">
+                                    <i class="fas fa-id-card"></i>
+                                    <div>
+                                        <div class="file-upload-text">Upload National ID Back</div>
+                                        <div class="file-upload-subtext">Clear photo of the back side</div>
+                                    </div>
+                                </div>
+                                <input type="file" id="nationalIdBack" class="file-input" accept="image/*" onchange="previewFile(event, 'nationalIdBackPreview', 'nationalIdBackName')">
+                            </div>
+                            <div class="file-preview-container">
+                                <img id="nationalIdBackPreview" class="file-preview" alt="National ID Back Preview">
+                                <div id="nationalIdBackName" class="file-name"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -406,8 +525,8 @@
                 <div class="driver-fields" id="driverFields">
                     <!-- Driver Verification Note -->
                     <div class="verification-note">
-                        <strong><i class="fas fa-shield-alt"></i> Verification Required:</strong> 
-                        To ensure safety and compliance, all drivers must provide valid driver's license, vehicle registration, and proof of insurance. Verification usually takes 24-48 hours.
+                        <strong><i class="fas fa-shield-alt"></i> Additional Driver Verification:</strong> 
+                        To ensure safety and compliance, all drivers must provide valid Driver's License, Vehicle Registration, and Proof of Insurance. Verification usually takes 24-48 hours.
                     </div>
 
                     <!-- Vehicle Information -->
@@ -435,44 +554,69 @@
                         </div>
                     </div>
 
-                    <!-- Document Upload -->
+                    <!-- Driver Documents -->
                     <div class="form-section">
                         <h3 class="section-title">
                             <i class="fas fa-file-upload"></i>
-                            Document Upload
+                            Driver Documents
                         </h3>
                         
                         <p style="margin-bottom: 20px; color: #666; font-size: 14px;">
-                            Upload scanned copies or clear photos of your documents
+                            Upload the following additional documents for driver verification
                         </p>
                         
                         <div class="form-grid">
                             <div class="form-group">
-                                <label class="required">Driver's License (Front)</label>
-                                <div class="file-upload-container" onclick="document.getElementById('licenseFile').click()">
+                                <label class="required">Driver's License</label>
+                                <div class="file-upload-container" onclick="document.getElementById('driverLicense').click()">
                                     <div class="file-upload-label">
-                                        <i class="fas fa-id-card"></i>
+                                        <i class="fas fa-id-badge"></i>
                                         <div>
-                                            <div class="file-upload-text">Upload License Front</div>
-                                            <div class="file-upload-subtext">JPG, PNG or PDF up to 5MB</div>
+                                            <div class="file-upload-text">Upload Driver's License</div>
+                                            <div class="file-upload-subtext">Valid driving license</div>
                                         </div>
                                     </div>
-                                    <input type="file" id="licenseFile" class="file-input" accept="image/*,.pdf" onchange="previewLicense(event)">
+                                    <input type="file" id="driverLicense" class="file-input" accept="image/*,.pdf" onchange="previewFile(event, 'driverLicensePreview', 'driverLicenseName')">
                                 </div>
-                                <img id="licensePreview" class="file-preview" alt="License Preview">
+                                <div class="file-preview-container">
+                                    <img id="driverLicensePreview" class="file-preview" alt="Driver's License Preview">
+                                    <div id="driverLicenseName" class="file-name"></div>
+                                </div>
                             </div>
                             
                             <div class="form-group">
-                                <label>Additional Documents</label>
-                                <div class="file-upload-container" onclick="document.getElementById('additionalDocs').click()">
+                                <label class="required">Vehicle Registration</label>
+                                <div class="file-upload-container" onclick="document.getElementById('vehicleRegistration').click()">
                                     <div class="file-upload-label">
                                         <i class="fas fa-file-contract"></i>
                                         <div>
-                                            <div class="file-upload-text">Vehicle Registration & Insurance</div>
-                                            <div class="file-upload-subtext">Optional now, required before first ride</div>
+                                            <div class="file-upload-text">Vehicle Registration</div>
+                                            <div class="file-upload-subtext">Current registration document</div>
                                         </div>
                                     </div>
-                                    <input type="file" id="additionalDocs" class="file-input" multiple>
+                                    <input type="file" id="vehicleRegistration" class="file-input" accept="image/*,.pdf" onchange="previewFile(event, 'vehicleRegistrationPreview', 'vehicleRegistrationName')">
+                                </div>
+                                <div class="file-preview-container">
+                                    <img id="vehicleRegistrationPreview" class="file-preview" alt="Vehicle Registration Preview">
+                                    <div id="vehicleRegistrationName" class="file-name"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="required">Proof of Insurance</label>
+                                <div class="file-upload-container" onclick="document.getElementById('insuranceProof').click()">
+                                    <div class="file-upload-label">
+                                        <i class="fas fa-shield-alt"></i>
+                                        <div>
+                                            <div class="file-upload-text">Insurance Proof</div>
+                                            <div class="file-upload-subtext">Valid insurance certificate</div>
+                                        </div>
+                                    </div>
+                                    <input type="file" id="insuranceProof" class="file-input" accept="image/*,.pdf" onchange="previewFile(event, 'insuranceProofPreview', 'insuranceProofName')">
+                                </div>
+                                <div class="file-preview-container">
+                                    <img id="insuranceProofPreview" class="file-preview" alt="Insurance Proof Preview">
+                                    <div id="insuranceProofName" class="file-name"></div>
                                 </div>
                             </div>
                         </div>
@@ -511,6 +655,14 @@
                 driverBtn.classList.remove('active');
                 driverFields.classList.remove('show');
                 submitBtnText.textContent = 'Create Rider Account';
+                
+                // Make driver fields optional
+                document.getElementById('carModel').required = false;
+                document.getElementById('carColor').required = false;
+                document.getElementById('licensePlate').required = false;
+                document.getElementById('driverLicense').required = false;
+                document.getElementById('vehicleRegistration').required = false;
+                document.getElementById('insuranceProof').required = false;
             } else {
                 driverBtn.classList.add('active');
                 riderBtn.classList.remove('active');
@@ -521,6 +673,9 @@
                 document.getElementById('carModel').required = true;
                 document.getElementById('carColor').required = true;
                 document.getElementById('licensePlate').required = true;
+                document.getElementById('driverLicense').required = true;
+                document.getElementById('vehicleRegistration').required = true;
+                document.getElementById('insuranceProof').required = true;
             }
         }
 
@@ -528,23 +683,31 @@
         riderBtn.addEventListener('click', () => toggleUserType('rider'));
         driverBtn.addEventListener('click', () => toggleUserType('driver'));
 
-        // License preview function
-        function previewLicense(event) {
+        // File preview function
+        function previewFile(event, previewId, nameId) {
             const file = event.target.files[0];
-            const preview = document.getElementById('licensePreview');
+            const preview = document.getElementById(previewId);
+            const fileName = document.getElementById(nameId);
             
-            if (file && file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                };
-                reader.readAsDataURL(file);
+            if (file) {
+                // Show file name
+                fileName.textContent = file.name;
+                fileName.style.display = 'block';
+                
+                // Show image preview if it's an image
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.style.display = 'none';
+                }
             } else {
                 preview.style.display = 'none';
-                if (file) {
-                    alert('License uploaded: ' + file.name);
-                }
+                fileName.style.display = 'none';
             }
         }
 
@@ -561,7 +724,29 @@
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Validate National ID uploads
+            const nationalIdFront = document.getElementById('nationalIdFront').files[0];
+            const nationalIdBack = document.getElementById('nationalIdBack').files[0];
+            
+            if (!nationalIdFront || !nationalIdBack) {
+                alert('Please upload both front and back of your National ID');
+                return;
+            }
+            
             const isDriver = driverBtn.classList.contains('active');
+            
+            // Validate driver documents if driver
+            if (isDriver) {
+                const driverLicense = document.getElementById('driverLicense').files[0];
+                const vehicleRegistration = document.getElementById('vehicleRegistration').files[0];
+                const insuranceProof = document.getElementById('insuranceProof').files[0];
+                
+                if (!driverLicense || !vehicleRegistration || !insuranceProof) {
+                    alert('Please upload all required driver documents: Driver\'s License, Vehicle Registration, and Proof of Insurance');
+                    return;
+                }
+            }
+            
             const formData = new FormData(this);
             formData.append('userType', isDriver ? 'driver' : 'rider');
             
@@ -578,17 +763,26 @@
                 await new Promise(resolve => setTimeout(resolve, 2000));
                 
                 // Success message
-                alert(`✅ Success! ${isDriver ? 'Driver' : 'Rider'} account created successfully. ${isDriver ? 'Your documents are under verification (24-48 hours).' : 'You can now book rides!'}`);
+                const message = isDriver 
+                    ? '✅ Driver account created successfully! Your documents are under verification (24-48 hours). You will receive an email when approved.'
+                    : '✅ Rider account created successfully! Your National ID is being verified. You can browse rides while verification completes.';
+                
+                alert(message);
                 
                 // Reset form
                 form.reset();
-                document.getElementById('licensePreview').style.display = 'none';
+                
+                // Clear all previews
+                document.querySelectorAll('.file-preview').forEach(preview => {
+                    preview.style.display = 'none';
+                });
+                
+                document.querySelectorAll('.file-name').forEach(name => {
+                    name.style.display = 'none';
+                });
                 
                 // Reset to rider view
-                if (isDriver) {
-                    // Optionally keep driver view if registering another driver
-                    // toggleUserType('rider');
-                }
+                toggleUserType('rider');
                 
             } catch (error) {
                 alert('❌ Registration failed. Please check your information and try again.');
@@ -599,14 +793,22 @@
             }
         });
 
-        // Initialize form with validation
+        // Initialize form
         document.addEventListener('DOMContentLoaded', function() {
-            // Add required asterisk to driver fields
-            const driverRequiredFields = ['carModel', 'carColor', 'licensePlate'];
+            // National ID is always required
+            document.getElementById('nationalIdFront').required = true;
+            document.getElementById('nationalIdBack').required = true;
+            
+            // Driver fields start as not required
+            const driverRequiredFields = [
+                'carModel', 'carColor', 'licensePlate', 
+                'driverLicense', 'vehicleRegistration', 'insuranceProof'
+            ];
+            
             driverRequiredFields.forEach(fieldId => {
                 const field = document.getElementById(fieldId);
                 if (field) {
-                    field.required = false; // Start as not required for riders
+                    field.required = false;
                 }
             });
         });
