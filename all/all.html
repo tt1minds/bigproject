@@ -6,7 +6,7 @@
     <title>TransitGo | Available Vehicles</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Reset and Base Styles */
+        /* ===== RESET & BASE STYLES ===== */
         * {
             margin: 0;
             padding: 0;
@@ -18,13 +18,14 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
             min-height: 100vh;
             color: #333;
+            line-height: 1.6;
         }
 
-        /* Header */
+        /* ===== HEADER ===== */
         .header {
             background: linear-gradient(135deg, #6c63ff 0%, #4a44c6 100%);
             color: white;
-            padding: 25px 40px;
+            padding: 20px 40px;
             box-shadow: 0 4px 20px rgba(108, 99, 255, 0.2);
             position: sticky;
             top: 0;
@@ -72,6 +73,10 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
+        .user-menu a.active {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
         .user-profile {
             display: flex;
             align-items: center;
@@ -88,16 +93,16 @@
             object-fit: cover;
         }
 
-        /* Main Container */
+        /* ===== MAIN CONTAINER ===== */
         .main-container {
             max-width: 1400px;
-            margin: 0 auto;
-            padding: 30px 20px;
+            margin: 30px auto;
+            padding: 0 20px;
             display: flex;
             gap: 30px;
         }
 
-        /* Sidebar Filters */
+        /* ===== SIDEBAR FILTERS ===== */
         .sidebar {
             width: 280px;
             flex-shrink: 0;
@@ -119,6 +124,10 @@
             display: flex;
             align-items: center;
             gap: 10px;
+        }
+
+        .filter-title i {
+            font-size: 20px;
         }
 
         .filter-group {
@@ -161,6 +170,7 @@
 
         .filter-option span {
             flex: 1;
+            font-size: 14px;
         }
 
         .vehicle-count {
@@ -185,11 +195,13 @@
             border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 14px;
+            width: 100%;
         }
 
         .price-input:focus {
             outline: none;
             border-color: #6c63ff;
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
         }
 
         .apply-filters {
@@ -204,6 +216,10 @@
             cursor: pointer;
             transition: all 0.3s;
             margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .apply-filters:hover {
@@ -211,7 +227,7 @@
             box-shadow: 0 8px 20px rgba(108, 99, 255, 0.3);
         }
 
-        /* Main Content */
+        /* ===== MAIN CONTENT ===== */
         .main-content {
             flex: 1;
         }
@@ -221,6 +237,10 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
         }
 
         .page-title {
@@ -250,33 +270,15 @@
             color: #444;
             min-width: 200px;
             cursor: pointer;
+            transition: border-color 0.3s;
         }
 
-        .view-toggle {
-            display: flex;
-            gap: 5px;
-            background: white;
-            padding: 5px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
+        .sort-select:focus {
+            outline: none;
+            border-color: #6c63ff;
         }
 
-        .view-btn {
-            padding: 10px 15px;
-            border: none;
-            background: transparent;
-            border-radius: 6px;
-            cursor: pointer;
-            color: #666;
-            transition: all 0.3s;
-        }
-
-        .view-btn.active {
-            background: #6c63ff;
-            color: white;
-        }
-
-        /* Vehicles Grid */
+        /* ===== VEHICLES GRID ===== */
         .vehicles-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -301,6 +303,7 @@
             height: 200px;
             width: 100%;
             object-fit: cover;
+            display: block;
         }
 
         .vehicle-badge {
@@ -316,6 +319,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            z-index: 2;
         }
 
         .vehicle-content {
@@ -342,6 +346,10 @@
             display: flex;
             align-items: center;
             gap: 5px;
+        }
+
+        .vehicle-subtitle i {
+            font-size: 13px;
         }
 
         .vehicle-rating {
@@ -376,6 +384,7 @@
         .detail-item i {
             color: #6c63ff;
             width: 20px;
+            font-size: 14px;
         }
 
         .vehicle-footer {
@@ -422,44 +431,14 @@
             transform: none;
         }
 
-        /* Map View */
-        .map-container {
-            height: 600px;
-            background: #f0f0f0;
-            border-radius: 16px;
-            overflow: hidden;
-            display: none;
-            position: relative;
-        }
-
-        .map-view.active {
-            display: block;
-        }
-
-        .map-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #666;
-        }
-
-        .map-placeholder i {
-            font-size: 64px;
-            margin-bottom: 20px;
-            color: #6c63ff;
-            opacity: 0.5;
-        }
-
-        /* No Results */
+        /* ===== NO RESULTS ===== */
         .no-results {
             text-align: center;
             padding: 60px 20px;
             background: white;
             border-radius: 16px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            grid-column: 1 / -1;
         }
 
         .no-results i {
@@ -480,7 +459,7 @@
             margin-bottom: 30px;
         }
 
-        /* Pagination */
+        /* ===== PAGINATION ===== */
         .pagination {
             display: flex;
             justify-content: center;
@@ -500,6 +479,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            font-size: 14px;
         }
 
         .pagination-btn:hover {
@@ -513,13 +493,8 @@
             border-color: #6c63ff;
         }
 
-        .pagination-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 1100px) {
             .main-container {
                 flex-direction: column;
             }
@@ -540,9 +515,19 @@
         }
 
         @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+            
             .header-content {
                 flex-direction: column;
-                gap: 20px;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .user-menu {
+                flex-wrap: wrap;
+                justify-content: center;
             }
             
             .page-header {
@@ -557,6 +542,7 @@
             
             .sort-select {
                 flex: 1;
+                min-width: auto;
             }
             
             .vehicles-grid {
@@ -565,15 +551,6 @@
         }
 
         @media (max-width: 480px) {
-            .header {
-                padding: 20px;
-            }
-            
-            .user-menu {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
             .vehicle-footer {
                 flex-direction: column;
                 gap: 15px;
@@ -583,6 +560,15 @@
             .book-btn {
                 width: 100%;
                 justify-content: center;
+            }
+            
+            .user-profile {
+                padding: 8px 15px;
+            }
+            
+            .user-menu a {
+                padding: 8px 15px;
+                font-size: 14px;
             }
         }
     </style>
@@ -685,40 +671,9 @@
                     </div>
                 </div>
                 
-                <div class="filter-group">
-                    <label>Driver Rating</label>
-                    <div class="filter-options">
-                        <label class="filter-option">
-                            <input type="checkbox" checked>
-                            <span>4.5+ stars</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" checked>
-                            <span>4.0+ stars</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox">
-                            <span>Any rating</span>
-                        </label>
-                    </div>
-                </div>
-                
                 <button class="apply-filters">
                     <i class="fas fa-sync-alt"></i>
                     Apply Filters
-                </button>
-            </div>
-            
-            <div class="filter-card">
-                <h3 class="filter-title">
-                    <i class="fas fa-map-marker-alt"></i>
-                    Current Location
-                </h3>
-                <p style="color: #666; margin-bottom: 15px;">Downtown Area, City Center</p>
-                <input type="text" class="form-control" placeholder="Change location..." style="margin-bottom: 15px;">
-                <button class="apply-filters" style="background: #4CAF50;">
-                    <i class="fas fa-location-arrow"></i>
-                    Use Current Location
                 </button>
             </div>
         </aside>
@@ -729,7 +684,7 @@
             <div class="page-header">
                 <div>
                     <h1 class="page-title">Available Vehicles</h1>
-                    <p class="page-subtitle">35 vehicles available near you</p>
+                    <p class="page-subtitle">6 vehicles available near you</p>
                 </div>
                 
                 <div class="sort-controls">
@@ -740,15 +695,6 @@
                         <option>Rating: Highest First</option>
                         <option>Distance: Nearest First</option>
                     </select>
-                    
-                    <div class="view-toggle">
-                        <button class="view-btn active" data-view="grid">
-                            <i class="fas fa-th"></i>
-                        </button>
-                        <button class="view-btn" data-view="map">
-                            <i class="fas fa-map"></i>
-                        </button>
-                    </div>
                 </div>
             </div>
 
@@ -1069,19 +1015,6 @@
                 </div>
             </div>
 
-            <!-- Map View -->
-            <div id="mapView" class="map-container">
-                <div class="map-placeholder">
-                    <i class="fas fa-map-marked-alt"></i>
-                    <h3>Interactive Map View</h3>
-                    <p>Available vehicles shown on map with real-time locations</p>
-                    <button class="book-btn" style="margin-top: 20px;">
-                        <i class="fas fa-map"></i>
-                        Load Live Map
-                    </button>
-                </div>
-            </div>
-
             <!-- Pagination -->
             <div class="pagination">
                 <button class="pagination-btn" disabled>
@@ -1091,7 +1024,7 @@
                 <button class="pagination-btn active">1</button>
                 <button class="pagination-btn">2</button>
                 <button class="pagination-btn">3</button>
-                <span>...</span>
+                <span style="padding: 10px;">...</span>
                 <button class="pagination-btn">6</button>
                 <button class="pagination-btn">
                     Next
@@ -1102,137 +1035,58 @@
     </div>
 
     <script>
-        // DOM Elements
-        const gridViewBtn = document.querySelector('[data-view="grid"]');
-        const mapViewBtn = document.querySelector('[data-view="map"]');
-        const vehiclesGrid = document.getElementById('vehiclesGrid');
-        const mapView = document.getElementById('mapView');
-        const bookButtons = document.querySelectorAll('.book-btn');
-        const applyFiltersBtn = document.querySelector('.apply-filters');
-        const sortSelect = document.querySelector('.sort-select');
-
-        // View Toggle
-        function toggleView(view) {
-            if (view === 'grid') {
-                gridViewBtn.classList.add('active');
-                mapViewBtn.classList.remove('active');
-                vehiclesGrid.style.display = 'grid';
-                mapView.classList.remove('active');
-            } else {
-                mapViewBtn.classList.add('active');
-                gridViewBtn.classList.remove('active');
-                vehiclesGrid.style.display = 'none';
-                mapView.classList.add('active');
-            }
-        }
-
-        gridViewBtn.addEventListener('click', () => toggleView('grid'));
-        mapViewBtn.addEventListener('click', () => toggleView('map'));
-
-        // Book Button Handler
-        bookButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const vehicleTitle = this.closest('.vehicle-card').querySelector('.vehicle-title').textContent;
-                const vehiclePrice = this.closest('.vehicle-card').querySelector('.vehicle-price').textContent;
-                
-                // Show booking modal or redirect to booking page
-                alert(`Booking ${vehicleTitle}\nPrice: ${vehiclePrice}\n\nRedirecting to booking page...`);
-                
-                // In a real app, you would redirect to booking page
-                // window.location.href = `booking.html?vehicle=${encodeURIComponent(vehicleTitle)}`;
-                
-                // Disable button after click
-                this.disabled = true;
-                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-                
-                // Re-enable after 3 seconds (simulating booking process)
-                setTimeout(() => {
-                    this.disabled = false;
-                    this.innerHTML = '<i class="fas fa-calendar-alt"></i> Book Now';
-                }, 3000);
-            });
-        });
-
-        // Filter Application
-        applyFiltersBtn.addEventListener('click', function() {
-            const minPrice = document.querySelector('.price-input[placeholder="Min"]').value;
-            const maxPrice = document.querySelector('.price-input[placeholder="Max"]').value;
-            
-            // Show loading state
-            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Applying Filters...';
-            this.disabled = true;
-            
-            // Simulate filter application
-            setTimeout(() => {
-                alert(`Filters applied!\nPrice range: $${minPrice} - $${maxPrice} per km`);
-                
-                // Reset button
-                this.innerHTML = '<i class="fas fa-sync-alt"></i> Apply Filters';
-                this.disabled = false;
-                
-                // In a real app, you would filter the vehicle cards here
-                // filterVehicles(minPrice, maxPrice);
-            }, 1000);
-        });
-
-        // Sort Vehicles
-        sortSelect.addEventListener('change', function() {
-            const sortValue = this.value;
-            console.log(`Sorting by: ${sortValue}`);
-            
-            // Show sorting indicator
-            const originalValue = this.value;
-            this.disabled = true;
-            
-            // Simulate sorting delay
-            setTimeout(() => {
-                alert(`Vehicles sorted by: ${sortValue}`);
-                this.disabled = false;
-            }, 500);
-        });
-
-        // Initialize
+        // Make buttons interactive
         document.addEventListener('DOMContentLoaded', function() {
-            // Set default view
-            toggleView('grid');
-            
-            // Add click handlers to filter options
-            document.querySelectorAll('.filter-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    const checkbox = this.querySelector('input[type="checkbox"]');
-                    checkbox.checked = !checkbox.checked;
+            // Book buttons
+            document.querySelectorAll('.book-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const vehicleTitle = this.closest('.vehicle-card').querySelector('.vehicle-title').textContent;
+                    const vehiclePrice = this.closest('.vehicle-card').querySelector('.vehicle-price').textContent;
                     
-                    // Update count if needed
-                    const countElement = this.querySelector('.vehicle-count');
-                    if (countElement) {
-                        // Simulate count update
-                        const currentCount = parseInt(countElement.textContent);
-                        if (checkbox.checked) {
-                            countElement.textContent = currentCount + 1;
-                        } else {
-                            countElement.textContent = Math.max(0, currentCount - 1);
-                        }
+                    alert(`Booking: ${vehicleTitle}\nPrice: ${vehiclePrice}\n\nRedirecting to booking page...`);
+                    
+                    // Simulate booking process
+                    const originalHTML = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                    this.disabled = true;
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalHTML;
+                        this.disabled = false;
+                    }, 2000);
+                });
+            });
+
+            // Filter button
+            document.querySelector('.apply-filters').addEventListener('click', function() {
+                const minPrice = document.querySelector('.price-input[placeholder="Min"]').value;
+                const maxPrice = document.querySelector('.price-input[placeholder="Max"]').value;
+                
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Applying...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    alert(`Filters applied!\nPrice range: $${minPrice} - $${maxPrice} per km`);
+                    this.innerHTML = '<i class="fas fa-sync-alt"></i> Apply Filters';
+                    this.disabled = false;
+                }, 1000);
+            });
+
+            // Sort select
+            document.querySelector('.sort-select').addEventListener('change', function() {
+                console.log('Sorting by:', this.value);
+            });
+
+            // Checkbox toggles
+            document.querySelectorAll('.filter-option').forEach(option => {
+                option.addEventListener('click', function(e) {
+                    if (e.target.type !== 'checkbox') {
+                        const checkbox = this.querySelector('input[type="checkbox"]');
+                        checkbox.checked = !checkbox.checked;
                     }
                 });
             });
         });
-
-        // Vehicle data for potential API integration
-        const vehicleData = [
-            {
-                id: 1,
-                name: "Tesla Model 3",
-                type: "Electric",
-                driver: "Michael Chen",
-                rating: 4.8,
-                passengers: 4,
-                bags: 2,
-                price: 1.20,
-                features: ["Free WiFi", "Charging Port"],
-                image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80"
-            },
-            // More vehicles would be added here
-        ];
     </script>
 </body>
 </html>
