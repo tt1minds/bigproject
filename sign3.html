@@ -4,155 +4,225 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TransitGo | Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Reset and Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            color: #333;
         }
 
-        .container {
-            display: flex;
-            width: 90%;
-            max-width: 1200px;
+        .registration-container {
+            width: 100%;
+            max-width: 900px;
             background: white;
-            border-radius: 20px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            min-height: 700px;
         }
 
-        .hero-section {
-            flex: 1;
-            background: linear-gradient(rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9)), 
-                        url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
+        .registration-header {
+            background: linear-gradient(135deg, #6c63ff 0%, #4a44c6 100%);
             color: white;
-            padding: 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            padding: 30px 40px;
+            text-align: center;
         }
 
-        .hero-section h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
+        .registration-header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
         }
 
-        .hero-section p {
-            font-size: 1.2rem;
+        .registration-header p {
+            font-size: 16px;
             opacity: 0.9;
-            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.5;
         }
 
-        .form-section {
-            flex: 1;
-            padding: 50px;
-            overflow-y: auto;
+        .registration-content {
+            padding: 40px;
         }
 
+        /* User Type Toggle */
         .user-type-toggle {
             display: flex;
-            background: #f5f5f5;
-            border-radius: 10px;
-            padding: 5px;
+            background: #f0f2f5;
+            border-radius: 12px;
+            padding: 6px;
             margin-bottom: 30px;
+            border: 1px solid #e1e5eb;
         }
 
         .user-type-btn {
             flex: 1;
-            padding: 15px;
+            padding: 16px 10px;
             text-align: center;
             border: none;
-            background: none;
-            font-size: 1.1rem;
+            background: transparent;
+            font-size: 16px;
             font-weight: 600;
+            color: #555;
             cursor: pointer;
-            border-radius: 8px;
+            border-radius: 10px;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .user-type-btn i {
+            font-size: 18px;
         }
 
         .user-type-btn.active {
-            background: #667eea;
+            background: #6c63ff;
             color: white;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 4px 12px rgba(108, 99, 255, 0.3);
         }
 
-        .form-title {
-            font-size: 2rem;
-            color: #333;
+        /* Form Sections */
+        .form-section {
             margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #eee;
         }
 
+        .form-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #4a44c6;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title i {
+            font-size: 22px;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        /* Form Groups */
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
-        label {
+        .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: #555;
             font-weight: 600;
+            color: #444;
+            font-size: 14px;
         }
 
-        input, select {
+        .form-group label.required:after {
+            content: " *";
+            color: #ff4757;
+        }
+
+        .form-control {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
             border-radius: 10px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .file-upload {
-            border: 2px dashed #e0e0e0;
-            padding: 30px;
-            text-align: center;
-            border-radius: 10px;
-            cursor: pointer;
+            font-size: 15px;
             transition: all 0.3s ease;
+            background: #fdfdfd;
         }
 
-        .file-upload:hover {
-            border-color: #667eea;
-            background: #f9f9ff;
+        .form-control:focus {
+            outline: none;
+            border-color: #6c63ff;
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+            background: white;
         }
 
-        .file-upload input {
+        .form-control::placeholder {
+            color: #aaa;
+        }
+
+        /* File Upload */
+        .file-upload-container {
+            border: 2px dashed #d0d7e2;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            background: #f9fafc;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .file-upload-container:hover {
+            border-color: #6c63ff;
+            background: #f6f5ff;
+        }
+
+        .file-upload-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .file-upload-label i {
+            font-size: 32px;
+            color: #6c63ff;
+        }
+
+        .file-upload-text {
+            font-weight: 600;
+            color: #555;
+            font-size: 15px;
+        }
+
+        .file-upload-subtext {
+            color: #888;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .file-input {
             display: none;
         }
 
-        .file-label {
-            color: #667eea;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .license-preview {
-            margin-top: 10px;
+        .file-preview {
+            margin-top: 15px;
             max-width: 200px;
             border-radius: 8px;
+            border: 1px solid #eee;
             display: none;
         }
 
-        .form-section .driver-fields {
+        /* Driver Fields */
+        .driver-fields {
             display: none;
             animation: fadeIn 0.5s ease;
         }
@@ -161,190 +231,302 @@
             display: block;
         }
 
+        /* Verification Note */
+        .verification-note {
+            background: linear-gradient(135deg, #e8f4ff 0%, #e0f0ff 100%);
+            border-left: 4px solid #4a44c6;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0 30px;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #2c5282;
+        }
+
+        .verification-note strong {
+            color: #4a44c6;
+        }
+
+        /* Submit Button */
         .submit-btn {
             width: 100%;
             padding: 18px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #6c63ff 0%, #4a44c6 100%);
             color: white;
             border: none;
             border-radius: 10px;
-            font-size: 1.2rem;
+            font-size: 17px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin-top: 20px;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
 
         .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(108, 99, 255, 0.3);
         }
 
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Login Link */
         .login-link {
             text-align: center;
             margin-top: 25px;
             color: #666;
+            font-size: 15px;
         }
 
         .login-link a {
-            color: #667eea;
+            color: #6c63ff;
             text-decoration: none;
             font-weight: 600;
         }
 
-        .verification-note {
-            background: #e8f4ff;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            font-size: 0.9rem;
-            color: #2c5282;
+        .login-link a:hover {
+            text-decoration: underline;
         }
 
+        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Responsive */
         @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-                width: 95%;
+            .registration-container {
+                border-radius: 12px;
             }
             
-            .hero-section {
-                padding: 30px;
-                text-align: center;
+            .registration-header {
+                padding: 25px 20px;
             }
             
-            .form-section {
-                padding: 30px;
+            .registration-header h1 {
+                font-size: 26px;
+            }
+            
+            .registration-content {
+                padding: 25px 20px;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .user-type-btn {
+                padding: 14px 10px;
+                font-size: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .registration-header h1 {
+                font-size: 22px;
+            }
+            
+            .section-title {
+                font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Left Hero Section -->
-        <div class="hero-section">
-            <h1>Join TransitGo Today</h1>
-            <p>Whether you need a ride or want to earn by driving, TransitGo connects you to reliable transportation. Join thousands of users in your city.</p>
-            
-            <div style="margin-top: 40px;">
-                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                    <h3 style="margin-bottom: 10px;">🚗 For Drivers</h3>
-                    <p>Earn on your schedule • Weekly payments • 24/7 support • Flexible hours</p>
-                </div>
-                
-                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 10px;">
-                    <h3 style="margin-bottom: 10px;">👤 For Riders</h3>
-                    <p>Affordable rides • Real-time tracking • Multiple payment options • Safe travels</p>
-                </div>
-            </div>
+    <div class="registration-container">
+        <!-- Header -->
+        <div class="registration-header">
+            <h1>Join TransitGo</h1>
+            <p>Sign up as a rider to get around town, or as a driver to start earning on your own schedule</p>
         </div>
 
-        <!-- Right Form Section -->
-        <div class="form-section">
+        <!-- Registration Form -->
+        <div class="registration-content">
+            <!-- User Type Toggle -->
             <div class="user-type-toggle">
-                <button class="user-type-btn active" data-type="rider">Rider</button>
-                <button class="user-type-btn" data-type="driver">Driver</button>
+                <button class="user-type-btn active" data-type="rider">
+                    <i class="fas fa-user"></i>
+                    Rider
+                </button>
+                <button class="user-type-btn" data-type="driver">
+                    <i class="fas fa-car"></i>
+                    Driver
+                </button>
             </div>
 
-            <h2 class="form-title">Create Your Account</h2>
-
+            <!-- Registration Form -->
             <form id="registrationForm">
-                <!-- Common Fields for Both -->
-                <div class="form-group">
-                    <label for="fullName">Full Name *</label>
-                    <input type="text" id="fullName" name="fullName" required placeholder="Enter your full name">
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-user-circle"></i>
+                        Personal Information
+                    </h3>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="fullName" class="required">Full Name</label>
+                            <input type="text" id="fullName" name="fullName" class="form-control" required placeholder="Enter your full name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="required">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-control" required placeholder="you@example.com">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone" class="required">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="form-control" required placeholder="+1 (234) 567-8900">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password" class="required">Password</label>
+                            <input type="password" id="password" name="password" class="form-control" required placeholder="Create a strong password">
+                        </div>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="email">Email Address *</label>
-                    <input type="email" id="email" name="email" required placeholder="you@example.com">
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">Phone Number *</label>
-                    <input type="tel" id="phone" name="phone" required placeholder="+1 (555) 123-4567">
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Password *</label>
-                    <input type="password" id="password" name="password" required placeholder="Create a strong password">
-                </div>
-
-                <!-- Driver-Specific Fields (Hidden by default) -->
+                <!-- Driver Fields (Hidden by Default) -->
                 <div class="driver-fields" id="driverFields">
+                    <!-- Driver Verification Note -->
                     <div class="verification-note">
-                        <strong>Verification Required:</strong> Drivers must provide valid license, vehicle registration, and insurance documents. Verification takes 24-48 hours.
+                        <strong><i class="fas fa-shield-alt"></i> Verification Required:</strong> 
+                        To ensure safety and compliance, all drivers must provide valid driver's license, vehicle registration, and proof of insurance. Verification usually takes 24-48 hours.
                     </div>
 
-                    <div class="form-group">
-                        <label for="carModel">Car Model *</label>
-                        <input type="text" id="carModel" name="carModel" placeholder="e.g., Toyota Camry 2022">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="carColor">Car Color *</label>
-                        <input type="text" id="carColor" name="carColor" placeholder="e.g., Silver">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="licensePlate">License Plate *</label>
-                        <input type="text" id="licensePlate" name="licensePlate" placeholder="State and plate number">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Driver's License *</label>
-                        <div class="file-upload" onclick="document.getElementById('licenseFile').click()">
-                            <span class="file-label">📁 Click to Upload License (Front)</span>
-                            <p style="color: #777; font-size: 0.9rem; margin-top: 5px;">JPG, PNG or PDF up to 5MB</p>
-                            <input type="file" id="licenseFile" name="licenseFile" accept="image/*,.pdf" onchange="previewLicense(event)">
+                    <!-- Vehicle Information -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-car"></i>
+                            Vehicle Information
+                        </h3>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="carModel" class="required">Car Model</label>
+                                <input type="text" id="carModel" name="carModel" class="form-control" placeholder="e.g., Toyota Camry 2022">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="carColor" class="required">Car Color</label>
+                                <input type="text" id="carColor" name="carColor" class="form-control" placeholder="e.g., Silver">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="licensePlate" class="required">License Plate</label>
+                                <input type="text" id="licensePlate" name="licensePlate" class="form-control" placeholder="State and plate number">
+                            </div>
                         </div>
-                        <img id="licensePreview" class="license-preview" alt="License Preview">
                     </div>
 
-                    <div class="form-group">
-                        <label>Additional Documents</label>
-                        <div class="file-upload" onclick="document.getElementById('additionalDocs').click()">
-                            <span class="file-label">📎 Vehicle Registration & Insurance</span>
-                            <p style="color: #777; font-size: 0.9rem; margin-top: 5px;">Optional for now, required before first ride</p>
-                            <input type="file" id="additionalDocs" name="additionalDocs" multiple>
+                    <!-- Document Upload -->
+                    <div class="form-section">
+                        <h3 class="section-title">
+                            <i class="fas fa-file-upload"></i>
+                            Document Upload
+                        </h3>
+                        
+                        <p style="margin-bottom: 20px; color: #666; font-size: 14px;">
+                            Upload scanned copies or clear photos of your documents
+                        </p>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="required">Driver's License (Front)</label>
+                                <div class="file-upload-container" onclick="document.getElementById('licenseFile').click()">
+                                    <div class="file-upload-label">
+                                        <i class="fas fa-id-card"></i>
+                                        <div>
+                                            <div class="file-upload-text">Upload License Front</div>
+                                            <div class="file-upload-subtext">JPG, PNG or PDF up to 5MB</div>
+                                        </div>
+                                    </div>
+                                    <input type="file" id="licenseFile" class="file-input" accept="image/*,.pdf" onchange="previewLicense(event)">
+                                </div>
+                                <img id="licensePreview" class="file-preview" alt="License Preview">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Additional Documents</label>
+                                <div class="file-upload-container" onclick="document.getElementById('additionalDocs').click()">
+                                    <div class="file-upload-label">
+                                        <i class="fas fa-file-contract"></i>
+                                        <div>
+                                            <div class="file-upload-text">Vehicle Registration & Insurance</div>
+                                            <div class="file-upload-subtext">Optional now, required before first ride</div>
+                                        </div>
+                                    </div>
+                                    <input type="file" id="additionalDocs" class="file-input" multiple>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" class="submit-btn" id="submitBtn">Create Rider Account</button>
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Create Rider Account</span>
+                </button>
 
+                <!-- Login Link -->
                 <div class="login-link">
-                    Already have an account? <a href="login.html">Sign In</a>
+                    Already have an account? <a href="#">Sign In</a>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        // Toggle between Rider and Driver
+        // DOM Elements
         const riderBtn = document.querySelector('[data-type="rider"]');
         const driverBtn = document.querySelector('[data-type="driver"]');
         const driverFields = document.getElementById('driverFields');
         const submitBtn = document.getElementById('submitBtn');
+        const submitBtnText = submitBtn.querySelector('span');
         const form = document.getElementById('registrationForm');
+        const phoneInput = document.getElementById('phone');
 
-        riderBtn.addEventListener('click', () => {
-            riderBtn.classList.add('active');
-            driverBtn.classList.remove('active');
-            driverFields.classList.remove('show');
-            submitBtn.textContent = 'Create Rider Account';
-        });
+        // Toggle between Rider and Driver
+        function toggleUserType(type) {
+            // Update buttons
+            if (type === 'rider') {
+                riderBtn.classList.add('active');
+                driverBtn.classList.remove('active');
+                driverFields.classList.remove('show');
+                submitBtnText.textContent = 'Create Rider Account';
+            } else {
+                driverBtn.classList.add('active');
+                riderBtn.classList.remove('active');
+                driverFields.classList.add('show');
+                submitBtnText.textContent = 'Create Driver Account';
+                
+                // Make driver fields required
+                document.getElementById('carModel').required = true;
+                document.getElementById('carColor').required = true;
+                document.getElementById('licensePlate').required = true;
+            }
+        }
 
-        driverBtn.addEventListener('click', () => {
-            driverBtn.classList.add('active');
-            riderBtn.classList.remove('active');
-            driverFields.classList.add('show');
-            submitBtn.textContent = 'Create Driver Account';
-        });
+        // Event Listeners for toggle buttons
+        riderBtn.addEventListener('click', () => toggleUserType('rider'));
+        driverBtn.addEventListener('click', () => toggleUserType('driver'));
 
         // License preview function
         function previewLicense(event) {
@@ -360,8 +542,20 @@
                 reader.readAsDataURL(file);
             } else {
                 preview.style.display = 'none';
+                if (file) {
+                    alert('License uploaded: ' + file.name);
+                }
             }
         }
+
+        // Phone formatting
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                value = '+1 (' + value.substring(0, 3) + ') ' + value.substring(3, 6) + '-' + value.substring(6, 10);
+            }
+            e.target.value = value;
+        });
 
         // Form submission
         form.addEventListener('submit', async function(e) {
@@ -372,48 +566,49 @@
             formData.append('userType', isDriver ? 'driver' : 'rider');
             
             // Show loading state
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Processing...';
+            const originalText = submitBtnText.textContent;
+            submitBtnText.textContent = 'Processing...';
             submitBtn.disabled = true;
             
             try {
                 // Here you would send to your backend API
                 // Example: await fetch('/api/register', { method: 'POST', body: formData });
                 
-                // Simulate API call
-                await new Promise(resolve => setTimeout(resolve, 1500));
+                // Simulate API call (2 seconds)
+                await new Promise(resolve => setTimeout(resolve, 2000));
                 
                 // Success message
-                alert(`Success! ${isDriver ? 'Driver' : 'Rider'} account created. ${isDriver ? 'Verification pending (24-48 hours).' : 'You can now book rides!'}`);
+                alert(`✅ Success! ${isDriver ? 'Driver' : 'Rider'} account created successfully. ${isDriver ? 'Your documents are under verification (24-48 hours).' : 'You can now book rides!'}`);
                 
-                // Reset form for next user
+                // Reset form
                 form.reset();
                 document.getElementById('licensePreview').style.display = 'none';
                 
+                // Reset to rider view
                 if (isDriver) {
-                    // Keep driver mode after submission if they want to register another driver
-                    driverFields.classList.add('show');
-                } else {
-                    // Switch back to rider view
-                    riderBtn.click();
+                    // Optionally keep driver view if registering another driver
+                    // toggleUserType('rider');
                 }
                 
             } catch (error) {
-                alert('Registration failed. Please try again.');
+                alert('❌ Registration failed. Please check your information and try again.');
                 console.error('Error:', error);
             } finally {
-                submitBtn.textContent = originalText;
+                submitBtnText.textContent = originalText;
                 submitBtn.disabled = false;
             }
         });
 
-        // Real-time phone formatting
-        document.getElementById('phone').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 0) {
-                value = '+1 (' + value.substring(0, 3) + ') ' + value.substring(3, 6) + '-' + value.substring(6, 10);
-            }
-            e.target.value = value;
+        // Initialize form with validation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add required asterisk to driver fields
+            const driverRequiredFields = ['carModel', 'carColor', 'licensePlate'];
+            driverRequiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field) {
+                    field.required = false; // Start as not required for riders
+                }
+            });
         });
     </script>
 </body>
