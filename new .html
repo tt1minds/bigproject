@@ -1,0 +1,303 @@
+<!-- Login Modal -->
+<div class="modal" id="login-modal">
+    <div class="modal-content" style="max-width: 400px;">
+        <div class="modal-header">
+            <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
+            <button class="close-modal" onclick="closeModal('login-modal')">&times;</button>
+        </div>
+        <div class="auth-form">
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" id="login-email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="login-password" class="form-control" required>
+                </div>
+                <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+                    <label>
+                        <input type="checkbox" id="remember-me"> Remember me
+                    </label>
+                    <a href="#" onclick="showForgotPassword()" style="font-size: 0.9rem;">Forgot Password?</a>
+                </div>
+                <button type="submit" class="confirm-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+            <div class="auth-divider">
+                <span>or continue with</span>
+            </div>
+            <div class="social-auth">
+                <button class="social-btn google-btn">
+                    <i class="fab fa-google"></i> Google
+                </button>
+                <button class="social-btn facebook-btn">
+                    <i class="fab fa-facebook"></i> Facebook
+                </button>
+            </div>
+            <p style="text-align: center; margin-top: 20px;">
+                Don't have an account? <a href="#" onclick="showSignup()">Sign up</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Signup Modal -->
+<div class="modal" id="signup-modal">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h2><i class="fas fa-user-plus"></i> Create Account</h2>
+            <button class="close-modal" onclick="closeModal('signup-modal')">&times;</button>
+        </div>
+        <div class="auth-form">
+            <form id="signup-form">
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-phone">Phone Number</label>
+                        <input type="tel" id="signup-phone" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" class="form-control" required>
+                </div>
+                <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <input type="password" id="signup-password" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="signup-confirm">Confirm Password</label>
+                        <input type="password" id="signup-confirm" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="user-type">I want to:</label>
+                    <div class="user-type-selector">
+                        <label class="user-type-option">
+                            <input type="radio" name="user-type" value="passenger" checked>
+                            <div class="option-content">
+                                <i class="fas fa-user"></i>
+                                <span>Book Rides</span>
+                            </div>
+                        </label>
+                        <label class="user-type-option">
+                            <input type="radio" name="user-type" value="driver">
+                            <div class="option-content">
+                                <i class="fas fa-id-card"></i>
+                                <span>Drive</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="terms" required>
+                        I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                    </label>
+                </div>
+                <button type="submit" class="confirm-btn">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Forgot Password Modal -->
+<div class="modal" id="forgot-modal">
+    <div class="modal-content" style="max-width: 400px;">
+        <div class="modal-header">
+            <h2><i class="fas fa-key"></i> Reset Password</h2>
+            <button class="close-modal" onclick="closeModal('forgot-modal')">&times;</button>
+        </div>
+        <div class="auth-form">
+            <form id="forgot-form">
+                <div class="form-group">
+                    <label for="forgot-email">Enter your email</label>
+                    <input type="email" id="forgot-email" class="form-control" required>
+                    <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">
+                        We'll send a reset link to your email
+                    </p>
+                </div>
+                <button type="submit" class="confirm-btn">
+                    <i class="fas fa-paper-plane"></i> Send Reset Link
+                </button>
+                <p style="text-align: center; margin-top: 20px;">
+                    <a href="#" onclick="showLogin()">Back to Login</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- User Profile Modal -->
+<div class="modal" id="profile-modal">
+    <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-header">
+            <h2><i class="fas fa-user-circle"></i> My Profile</h2>
+            <button class="close-modal" onclick="closeModal('profile-modal')">&times;</button>
+        </div>
+        <div class="profile-content">
+            <div class="profile-header">
+                <div class="profile-avatar" id="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-info">
+                    <h3 id="profile-name">Loading...</h3>
+                    <p id="profile-email">Loading...</p>
+                    <div class="profile-rating">
+                        <i class="fas fa-star"></i>
+                        <span id="profile-rating">4.8</span>
+                        <span class="profile-stats">• <span id="profile-rides">0</span> rides</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-tabs">
+                <button class="tab-btn active" onclick="openProfileTab('details')">Details</button>
+                <button class="tab-btn" onclick="openProfileTab('preferences')">Preferences</button>
+                <button class="tab-btn" onclick="openProfileTab('payment')">Payment</button>
+                <button class="tab-btn" onclick="openProfileTab('history')">History</button>
+            </div>
+            
+            <div class="tab-content active" id="details-tab">
+                <form id="profile-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="profile-edit-name" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" id="profile-edit-phone" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" id="profile-edit-address" class="form-control">
+                    </div>
+                    <button type="submit" class="confirm-btn">Save Changes</button>
+                </form>
+            </div>
+            
+            <div class="tab-content" id="preferences-tab">
+                <div class="form-group">
+                    <label>Default Vehicle Type</label>
+                    <select id="pref-vehicle-type" class="form-control">
+                        <option value="all">All</option>
+                        <option value="bus">Bus</option>
+                        <option value="taxi">Taxi</option>
+                        <option value="cab">Cab</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Notifications</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="pref-email"> Email</label>
+                        <label><input type="checkbox" id="pref-sms"> SMS</label>
+                        <label><input type="checkbox" id="pref-push"> Push</label>
+                    </div>
+                </div>
+                <button class="confirm-btn" onclick="savePreferences()">Save Preferences</button>
+            </div>
+            
+            <div class="tab-content" id="payment-tab">
+                <div class="payment-methods">
+                    <h4>Payment Methods</h4>
+                    <div id="payment-methods-list">
+                        <!-- Payment methods will be loaded here -->
+                    </div>
+                    <button class="add-payment-btn" onclick="showAddPayment()">
+                        <i class="fas fa-plus"></i> Add Payment Method
+                    </button>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="history-tab">
+                <div class="history-filters">
+                    <select id="history-filter" class="form-control" onchange="loadBookingHistory()">
+                        <option value="all">All Rides</option>
+                        <option value="completed">Completed</option>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+                <div id="history-list">
+                    <!-- Booking history will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Payment Method Modal -->
+<div class="modal" id="payment-modal">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h2><i class="fas fa-credit-card"></i> Add Payment Method</h2>
+            <button class="close-modal" onclick="closeModal('payment-modal')">&times;</button>
+        </div>
+        <div class="payment-form">
+            <div id="card-element" class="form-control"></div>
+            <div id="card-errors" style="color: #dc3545; margin: 10px 0;"></div>
+            <button class="confirm-btn" onclick="savePaymentMethod()">
+                <i class="fas fa-save"></i> Save Payment Method
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Booking Details Modal -->
+<div class="modal" id="booking-detail-modal">
+    <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+            <h2><i class="fas fa-ticket-alt"></i> Booking Details</h2>
+            <button class="close-modal" onclick="closeModal('booking-detail-modal')">&times;</button>
+        </div>
+        <div id="booking-detail-content">
+            <!-- Booking details will be populated here -->
+        </div>
+    </div>
+</div>
+
+<!-- Real-time Tracking Modal -->
+<div class="modal" id="tracking-modal">
+    <div class="modal-content" style="max-width: 700px;">
+        <div class="modal-header">
+            <h2><i class="fas fa-map-marker-alt"></i> Live Tracking</h2>
+            <button class="close-modal" onclick="closeModal('tracking-modal')">&times;</button>
+        </div>
+        <div class="tracking-container">
+            <div id="tracking-map" style="height: 300px; border-radius: 10px;"></div>
+            <div class="tracking-info">
+                <div class="tracking-stat">
+                    <i class="fas fa-car"></i>
+                    <div>
+                        <span class="stat-label">Vehicle</span>
+                        <span class="stat-value" id="tracking-vehicle">Loading...</span>
+                    </div>
+                </div>
+                <div class="tracking-stat">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <span class="stat-label">ETA</span>
+                        <span class="stat-value" id="tracking-eta">5 min</span>
+                    </div>
+                </div>
+                <div class="tracking-stat">
+                    <i class="fas fa-road"></i>
+                    <div>
+                        <span class="stat-label">Distance</span>
+                        <span class="stat-value" id="tracking-distance">1.2 km</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
